@@ -1,0 +1,3094 @@
+/*
+Theme Name: Mimos Korea Design
+Description: E-commerce theme for Mimos Korea Design - Modern, responsive, and secure
+Version: 1.0.0
+Author: David C Cavalcante
+Text Domain: mimoskorea
+
+REGRAS OBRIGATÓRIAS DO PROJETO:
+- Fonte: Google Font Inter (única fonte permitida)
+- Cor de textos: #000000 (todos os textos)
+- Tamanho texto: 1.125rem (18px)
+- Tamanho títulos H: 1.875rem (30px)
+- Unidades: SEMPRE usar rem ou em, NUNCA px
+- Ícones: APENAS Phosphor Icons
+- Imagens: APENAS .svg (ícones) e .webp (fotos)
+- NUNCA usar Stripe ou Mercado Livre
+*/
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* TailwindCSS 4.1 Base */
+@import "tailwindcss";
+
+/* Phosphor Icons */
+@import url('./libs/fonts/style.css');
+
+/* Global Variables - Mimos Korea Design */
+:root {
+    /* Paleta de Cores Oficial - Especificações do Projeto */
+    --color-text: #000000;
+    /* Cor de TODOS os textos do site */
+    --color-primary: #169485;
+    /* Cor primária do projeto */
+    --color-secondary: #1DC7D4;
+    /* Cor secundária */
+    --color-tertiary: #F1F0EE;
+    /* Cor terciária */
+    --color-yellow: #FFC313;
+    /* Amarelo */
+    --color-green: #6BFF32;
+    /* Verde */
+    --color-blue: #0068FD;
+    /* Azul */
+    --color-red: #F44000;
+    /* Vermelho */
+    --color-white: #ffffff;
+    --color-black: #000000;
+
+    /* Tipografia - Google Font Inter (ÚNICA fonte permitida no projeto) */
+    --font-primary: 'Inter', sans-serif;
+    --font-size-base: 1rem;
+    /* 16px - Base para cálculos rem */
+    --font-size-text: 1.125rem;
+    /* 18px - Tamanho padrão para TODOS os textos do site */
+    --font-size-big: 4.5rem;
+    /* 72px - Tamanho padrão para textos grandes */
+    --font-size-heading: 1.875rem;
+    /* 30px - Tamanho padrão para TODOS os títulos H1-H6 */
+    --font-weight-light: 200;
+    --font-weight-normal: 300;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* Layout Full-Width - Especificações do Projeto */
+    --content-padding: 2rem;
+    /* Padding lateral para não colar nas bordas */
+    --nav-height: 6rem;
+
+    /* Efeitos e Transições */
+    --transition: all 0.3s ease;
+    --border-radius: 0.5rem;
+
+    /* Regras Obrigatórias do Projeto */
+    /* - Fonte: Google Font Inter (única fonte permitida) */
+    /* - Cor de textos: #000000 (todos os textos) */
+    /* - Tamanho texto: 1.125rem (18px) */
+    /* - Tamanho títulos H: 1.875rem (30px) */
+    /* - Unidades: SEMPRE usar rem ou em, NUNCA px */
+    /* - Ícones: APENAS Phosphor Icons */
+    /* - Imagens: APENAS .svg (ícones) e .webp (fotos) */
+    /* - NUNCA usar Stripe ou Mercado Livre */
+}
+
+/* Base Styles */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 1rem;
+    /* Base para cálculos rem */
+}
+
+body {
+    font-family: var(--font-primary);
+    /* Google Font Inter - única fonte do projeto */
+    font-size: var(--font-size-text);
+    /* 18px - Tamanho padrão para TODOS os textos */
+    font-weight: var(--font-weight-normal);
+    color: var(--color-text);
+    /* #000000 - Cor de TODOS os textos */
+    background-color: var(--color-white);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-primary);
+    /* Google Font Inter - única fonte do projeto */
+    font-size: var(--font-size-heading);
+    /* 30px - Tamanho padrão para TODOS os títulos H */
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    /* #000000 - Cor de TODOS os textos */
+    line-height: 1.2;
+    margin: 0 0 1rem 0;
+}
+
+p {
+    font-size: var(--font-size-text);
+    /* 18px - Tamanho padrão para TODOS os textos */
+    color: var(--color-text);
+    /* #000000 - Cor de TODOS os textos */
+    margin: 0 0 1rem 0;
+}
+
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+a:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+}
+
+/* Layout Container */
+.full-width-section {
+    width: 100%;
+    /* Background 100% da viewport */
+}
+
+.content-container {
+    width: 100%;
+    padding-left: var(--content-padding);
+    padding-right: var(--content-padding);
+    /* Conteúdo com padding lateral sem max-width fixo */
+}
+
+.container {
+    width: var(--container-width);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Tarja Promocional Fixa */
+.promo-banner {
+    background-color: var(--color-black);
+    color: var(--color-white);
+    height: 2.9375rem;
+    /* 47px */
+    position: relative;
+    z-index: 50;
+}
+
+.promo-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    font-size: 0.75rem;
+    /* 12px */
+}
+
+.promo-banner a {
+    color: var(--color-white);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.promo-banner a:hover {
+    text-decoration: underline;
+}
+
+.promo-banner .promo-left {
+    flex-shrink: 0;
+}
+
+.promo-banner .promo-right {
+    text-align: right;
+    flex: 1;
+    margin-left: 1rem;
+}
+
+/* Responsividade da Tarja */
+@media (max-width: 768px) {
+    .promo-banner {
+        height: auto;
+    }
+
+    .promo-content {
+        flex-direction: column;
+        padding: 0.5rem 0;
+        text-align: center;
+    }
+
+    .promo-banner .promo-right {
+        margin-left: 0;
+        margin-top: 0.25rem;
+        text-align: center;
+    }
+}
+
+.site-header {
+    background: var(--color-background);
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.site-main {
+    min-height: 60vh;
+    padding: 2rem 0;
+}
+
+.site-footer {
+    background: var(--color-black);
+    color: var(--color-text);
+    padding: 3rem 0;
+    margin-top: 4rem;
+}
+
+.footer-top {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+@media (min-width: 1280px) {
+    .footer-top {
+        grid-template-columns: 2fr 1fr;
+    }
+}
+
+.footer-menu-columns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .footer-menu-columns {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.footer-menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.5rem;
+}
+
+.footer-menu-link {
+    color: var(--color-white);
+    text-decoration: none;
+    font-size: var(--font-size-base);
+}
+
+.footer-menu-link:hover {
+    color: var(--color-primary);
+    transition: var(--transition);
+}
+
+.footer-social-list {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.footer-social-link {
+    color: var(--color-white);
+    font-size: 1.25rem;
+}
+
+.footer-social-link:hover {
+    color: var(--color-primary);
+    transition: var(--transition);
+}
+
+/* Footer link hover behavior override */
+.site-footer a {
+    color: var(--color-white);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.site-footer a:hover {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.payment-icon {
+    height: 2rem;
+    width: auto;
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+/* ===== EXPRESS PAYMENT BUTTONS ===== */
+/* Remove bordas e border-radius dos botões Google Pay e Apple Pay */
+gpay-button,
+.gpay-button,
+[class*="gpay-button"],
+[class*="google-pay"],
+[class*="googlepay"],
+.apple-pay-button,
+[class*="apple-pay"],
+[class*="applepay"],
+.express-checkout-button,
+[class*="express-payment"],
+[class*="express-checkout"] {
+    border: none !important;
+    border-radius: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Estilos específicos para botões com classes mencionadas */
+.gpay-button.black.plain.short.pt.border-inset,
+.apple-pay-button.black.plain.short.pt.border-inset {
+    border: none !important;
+    border-radius: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: none !important;
+}
+
+/* Remove bordas de elementos filhos também */
+gpay-button *,
+.gpay-button *,
+[class*="gpay-button"] *,
+[class*="google-pay"] *,
+[class*="googlepay"] *,
+.apple-pay-button *,
+[class*="apple-pay"] *,
+[class*="applepay"] *,
+.express-checkout-button *,
+[class*="express-payment"] *,
+[class*="express-checkout"] * {
+    border: none !important;
+    border-radius: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.footer-heading {
+    font-size: var(--font-size-heading);
+    color: var(--color-white);
+    font-weight: var(--font-weight-semibold);
+    margin: 0 0 0.75rem 0;
+}
+
+.footer-text {
+    font-size: var(--font-size-base);
+    color: var(--color-white);
+    line-height: 1.6;
+}
+
+.newsletter-form {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.newsletter-input {
+    flex: 1;
+    padding: 0.625rem 0.75rem;
+    border: 1px solid var(--color-text);
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-text);
+    font-family: var(--font-primary);
+}
+
+.newsletter-button {
+    padding: 0.625rem 1rem;
+    background: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: var(--font-size-text);
+    font-family: var(--font-primary);
+    transition: var(--transition);
+}
+
+.newsletter-button:hover {
+    background: var(--color-secondary);
+}
+
+.footer-note {
+    font-size: 0.875rem;
+    color: var(--color-text);
+    opacity: 0.8;
+    margin-top: 0.75rem;
+    line-height: 1.5;
+}
+
+.whatsapp-qr {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.qr-image {
+    width: 10rem;
+    height: 10rem;
+    border: 1px solid var(--color-text);
+    border-radius: var(--border-radius);
+}
+
+.whatsapp-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-white);
+    text-decoration: none;
+    font-size: var(--font-size-text);
+    font-family: var(--font-primary);
+}
+
+.whatsapp-link:hover {
+    color: var(--color-primary);
+    transition: var(--transition);
+}
+
+.footer-bottom {
+    border-top: 1px solid var(--color-text);
+    margin-top: 2rem;
+    padding-top: 1rem;
+}
+
+.footer-copy {
+    font-size: var(--font-size-base);
+    color: var(--color-white);
+    text-align: center;
+    margin: 0;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn:hover {
+    background: var(--color-primary-dark);
+    color: white;
+}
+
+.btn-secondary {
+    background: var(--color-secondary);
+}
+
+.btn-secondary:hover {
+    background: #1a202c;
+}
+
+/* Forms */
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    font-family: var(--font-primary);
+    transition: var(--transition);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(237, 117, 26, 0.1);
+}
+
+/* WordPress Core */
+.screen-reader-text {
+    clip: rect(1px, 1px, 1px, 1px);
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+
+.alignleft {
+    float: left;
+    margin-right: 1rem;
+}
+
+.alignright {
+    float: right;
+    margin-left: 1rem;
+}
+
+.aligncenter {
+    display: block;
+    margin: 0 auto;
+}
+
+/* WooCommerce Base Styles - Sobrescrever apenas para botões gerais, não Add to Cart */
+.woocommerce .button:not(.single_add_to_cart_button) {
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.woocommerce .button:not(.single_add_to_cart_button):hover {
+    background: var(--color-primary-dark);
+    color: white;
+}
+
+/* WooCommerce Blocks: Checkout and Cart primary action buttons */
+.wc-block-checkout__actions .wc-block-checkout__actions_row .wc-block-components-checkout-place-order-button,
+.wc-block-components-checkout-place-order-button,
+.wc-block-cart__submit-button,
+a.wc-block-components-checkout-place-order-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-yellow) !important;
+    /* #FFC313 */
+    color: var(--color-black) !important;
+    /* #000000 */
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
+    width: auto !important;
+    /* remove width: 50% */
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    appearance: none;
+}
+
+.wc-block-checkout__actions .wc-block-checkout__actions_row .wc-block-components-checkout-place-order-button:hover,
+.wc-block-components-checkout-place-order-button:hover,
+.wc-block-cart__submit-button:hover,
+a.wc-block-components-checkout-place-order-button:hover {
+    background-color: var(--color-black) !important;
+    /* invert */
+    color: var(--color-yellow) !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+}
+
+/* Ensure block buttons in disabled/loading state remain consistent without shadow/border */
+.wc-block-components-checkout-place-order-button:disabled,
+.wc-block-cart__submit-button:disabled {
+    opacity: 0.6;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+/* WooCommerce Blocks: Coupon button (totals section) */
+.wc-block-components-button.wp-element-button.wc-block-components-totals-coupon__button.contained,
+.wc-block-components-totals-coupon__button,
+button.wc-block-components-button.wc-block-components-totals-coupon__button.contained,
+a.wc-block-components-button.wc-block-components-totals-coupon__button.contained {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-yellow) !important;
+    color: var(--color-black) !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
+    width: auto !important;
+    /* remove width: 50% */
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    appearance: none;
+}
+
+.wc-block-components-button.wp-element-button.wc-block-components-totals-coupon__button.contained:hover,
+.wc-block-components-totals-coupon__button:hover,
+button.wc-block-components-button.wc-block-components-totals-coupon__button.contained:hover,
+a.wc-block-components-button.wc-block-components-totals-coupon__button.contained:hover {
+    background-color: var(--color-black) !important;
+    color: var(--color-yellow) !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+}
+
+.wc-block-components-button.wp-element-button.wc-block-components-totals-coupon__button.contained:disabled,
+.wc-block-components-totals-coupon__button:disabled {
+    opacity: 0.6;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 0.5rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.75rem;
+    }
+
+    h3 {
+        font-size: 1.5rem;
+    }
+
+    .site-main {
+        padding: 1rem 0;
+    }
+}
+
+/* Utility Classes */
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mb-0 {
+    margin-bottom: 0;
+}
+
+.mb-1 {
+    margin-bottom: 0.5rem;
+}
+
+.mb-2 {
+    margin-bottom: 1rem;
+}
+
+.mb-3 {
+    margin-bottom: 1.5rem;
+}
+
+.mb-4 {
+    margin-bottom: 2rem;
+}
+
+.mt-0 {
+    margin-top: 0;
+}
+
+.mt-1 {
+    margin-top: 0.5rem;
+}
+
+.mt-2 {
+    margin-top: 1rem;
+}
+
+.mt-3 {
+    margin-top: 1.5rem;
+}
+
+.mt-4 {
+    margin-top: 2rem;
+}
+
+/* Nav Container Styles */
+.nav-container {
+    background-color: var(--color-white);
+    border-bottom: 1px solid var(--color-border);
+    height: var(--nav-height);
+}
+
+.nav-content {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 0 var(--content-padding);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.nav-logo {
+    height: 2.5rem;
+    width: auto;
+}
+
+.nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.nav-icon {
+    width: 1rem;
+    height: 1rem;
+    color: var(--color-text);
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.nav-icon:hover {
+    color: var(--color-primary);
+}
+
+.nav-icon-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+/* Cart Counter Styles - WooCommerce */
+.cart-count {
+    background-color: var(--color-yellow);
+    color: var(--color-black);
+    font-weight: 600;
+    font-size: 0.75rem;
+    line-height: 1;
+}
+
+/* Navigation Styles */
+.main-navigation {
+    width: 100%;
+    background-color: var(--color-yellow);
+    padding: 1rem 0;
+}
+
+.main-navigation .content-container {
+    width: 100%;
+    padding: 0 var(--content-padding);
+}
+
+.main-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    /* Espaçamento dinâmico entre itens */
+}
+
+.main-menu li {
+    margin: 0;
+    padding: 0;
+    /* flex: 1; */
+    text-align: center;
+}
+
+.main-menu a {
+    color: var(--color-text);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+    padding: 0.125rem 0;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-transform: uppercase;
+    font-family: var(--font-primary);
+}
+
+.main-menu a i {
+    font-size: 1.25rem;
+    line-height: 1;
+    font-family: "Phosphor" !important;
+}
+
+.main-menu a span {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+}
+
+.main-menu a:hover,
+.main-menu a:focus {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.main-menu .current-menu-item>a,
+.main-menu .current_page_item>a {
+    color: var(--color-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+/* Mobile Menu Styles */
+.mobile-menu-toggle {
+    color: var(--color-text);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.mobile-menu {
+    background-color: var(--color-white);
+}
+
+.mobile-menu-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.mobile-menu-list li {
+    margin: 0;
+    padding: 0;
+}
+
+.mobile-menu-list a {
+    color: var(--color-text);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    display: block;
+}
+
+.mobile-menu-list a:hover,
+.mobile-menu-list a:focus {
+    color: var(--color-primary);
+    background-color: rgba(22, 148, 133, 0.1);
+    text-decoration: none;
+}
+
+.mobile-menu-list .current-menu-item>a,
+.mobile-menu-list .current_page_item>a {
+    color: var(--color-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+/* Responsive Navigation */
+@media (max-width: 1023px) {
+    .main-navigation {
+        display: none !important;
+    }
+
+    .mobile-menu-toggle {
+        display: block;
+    }
+}
+
+@media (min-width: 1024px) {
+    .mobile-menu {
+        display: none !important;
+    }
+
+    .mobile-menu-toggle {
+        display: none;
+    }
+
+    .main-navigation {
+        display: flex !important;
+    }
+}
+
+/* Full-Width Layout Base */
+.full-width-section {
+    width: 100%;
+}
+
+.content-container {
+    width: 100%;
+    padding: 0 var(--content-padding);
+}
+
+.hidden {
+    display: none;
+}
+
+.block {
+    display: block;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.flex {
+    display: flex;
+}
+
+.grid {
+    display: grid;
+}
+
+/* ========================================
+   HERO CAROUSEL STYLES
+   ======================================== */
+
+.hero-carousel-section {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+.hero-carousel-container {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    cursor: grab;
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE/Edge */
+}
+
+.hero-carousel-container::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari */
+}
+
+.hero-carousel-container:active {
+    cursor: grabbing;
+}
+
+.hero-carousel-track {
+    display: flex;
+    gap: 1.5rem;
+    /* 24px gap entre imagens */
+    padding: 0 2rem;
+    width: max-content;
+}
+
+.hero-carousel-item {
+    flex-shrink: 0;
+    position: relative;
+    width: 39.0625rem;
+    /* 625px em rem (625/16) - largura proporcional para altura de 781px */
+    display: flex;
+    flex-direction: column;
+}
+
+.hero-carousel-link {
+    display: block;
+    width: 100%;
+    height: 48.8125rem;
+    /* 781px em rem (781/16) - altura ajustada conforme solicitado */
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    overflow: hidden;
+}
+
+.hero-carousel-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    user-select: none;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+}
+
+.hero-carousel-title {
+    font-size: var(--font-size-heading);
+    font-weight: 600;
+    margin: 0;
+    color: #000000;
+    padding: 1rem 0;
+    text-align: left;
+    flex-shrink: 0;
+}
+
+/* Responsividade para o carrossel */
+@media (max-width: 768px) {
+    .hero-carousel-item {
+        width: 29.296875rem;
+        /* 469px em rem - proporcional para tablets */
+    }
+
+    .hero-carousel-link {
+        height: 36.609375rem;
+        /* 586px em rem - proporcional para tablets */
+    }
+
+    .hero-carousel-track {
+        gap: 1rem;
+        padding: 0 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-carousel-item {
+        width: 23.4375rem;
+        /* 375px em rem - proporcional para mobile */
+    }
+
+    .hero-carousel-link {
+        height: 29.296875rem;
+        /* 469px em rem - proporcional para mobile */
+    }
+
+    .hero-carousel-track {
+        gap: 0.75rem;
+        padding: 0 0.5rem;
+    }
+
+    .hero-carousel-title {
+        font-size: 1.5rem;
+        /* Reduz título em mobile */
+    }
+}
+
+/* ===== RESPONSIVE BANNERS ===== */
+.responsive-banner-section {
+    width: 100%;
+    margin: 2rem 0;
+    overflow: hidden;
+}
+
+.responsive-banner-section .content-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 var(--content-padding);
+}
+
+.responsive-banner-link {
+    display: block;
+    width: 100%;
+    text-decoration: none;
+}
+
+.responsive-banner-picture {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.responsive-banner-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Estilos específicos para desktop */
+@media (min-width: 769px) {
+    .responsive-banner-image {
+        /* Desktop: 9516 × 507px - mantém proporção */
+        max-height: 31.6875rem;
+        /* 507px */
+    }
+}
+
+/* Estilos específicos para mobile */
+@media (max-width: 768px) {
+    .responsive-banner-section {
+        margin: 1.5rem 0;
+    }
+
+    .responsive-banner-image {
+        /* Mobile: 3261 × 894px - mantém proporção */
+        max-height: 55.875rem;
+        /* 894px */
+    }
+}
+
+/* Estilos específicos para cada banner */
+.banner-50off {
+    /* Estilos específicos para banner de 50% off */
+}
+
+.banner-biscoitos-orion {
+    /* Estilos específicos para banner de biscoitos Orion */
+}
+
+.banner-black-friday-2025 {
+    /* Estilos específicos para banner da Black Friday */
+}
+
+.banner-lojas {
+    /* Estilos específicos para banner de lojas */
+}
+
+.banner-ramen-nongshim {
+    /* Estilos específicos para banner de ramen Nongshim */
+}
+
+/* ========================================
+   CATEGORIES CIRCLES COMPONENT
+   ======================================== */
+
+.categories-circles-section {
+    width: 100%;
+    margin: 3rem 0;
+    overflow: hidden;
+}
+
+.categories-circles-container {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    cursor: grab;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+}
+
+.categories-circles-container::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
+}
+
+.categories-circles-container:active {
+    cursor: grabbing;
+}
+
+.categories-circles-track {
+    display: flex;
+    gap: 2rem;
+    padding: 1rem 0;
+    min-width: max-content;
+}
+
+.category-circle-item {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.category-circle-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none !important;
+}
+
+.category-circle-link:hover {
+    text-decoration: none !important;
+}
+
+.category-circle-link:focus {
+    text-decoration: none !important;
+}
+
+.category-circle-link:active {
+    text-decoration: none !important;
+}
+
+.category-circle {
+    width: 10rem;
+    /* 160px */
+    height: 10rem;
+    /* 160px */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.category-emoji {
+    font-size: 3.75rem;
+    /* 60px */
+    line-height: 1;
+    user-select: none;
+}
+
+.category-name {
+    font-size: var(--font-size-text);
+    font-weight: 500;
+    color: #000000;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.2;
+    max-width: 8rem;
+    word-wrap: break-word;
+}
+
+/* Desktop: Distribuição em linha única preenchendo toda a largura */
+@media (min-width: 1024px) {
+    .categories-circles-container {
+        overflow: visible;
+        cursor: default;
+    }
+
+    .categories-circles-track {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1rem 0;
+        width: 100%;
+        min-width: auto;
+    }
+
+    .category-circle-item {
+        /* flex: 1; */
+        max-width: none;
+    }
+}
+
+/* Tablet: Scroll horizontal mantido */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .categories-circles-track {
+        gap: 1.5rem;
+    }
+
+    .category-circle {
+        width: 8rem;
+        /* 128px */
+        height: 8rem;
+        /* 128px */
+    }
+
+    .category-emoji {
+        font-size: 3rem;
+        /* 48px */
+    }
+}
+
+/* Mobile: Scroll horizontal */
+@media (max-width: 767px) {
+    .categories-circles-section {
+        margin: 2rem 0;
+    }
+
+    .categories-circles-track {
+        gap: 1rem;
+        padding: 0.5rem 0;
+    }
+
+    .category-circle {
+        width: 7rem;
+        /* 112px */
+        height: 7rem;
+        /* 112px */
+    }
+
+    .category-emoji {
+        font-size: 2.5rem;
+        /* 40px */
+    }
+
+    .category-name {
+        font-size: 1rem;
+        /* 16px */
+        max-width: 6rem;
+    }
+}
+
+/* ========================================
+   SEÇÃO "MAIS VENDIDOS" - PRODUTOS WOOCOMMERCE
+   ======================================== */
+
+/* Container principal da seção */
+.best-sellers-section {
+    width: 100%;
+    background-color: var(--color-white);
+    padding: 3rem 0;
+    margin: 2rem 0;
+}
+
+.best-sellers-section .content-container {
+    width: 100%;
+    padding: 0 var(--content-padding);
+    margin: 0 auto;
+}
+
+/* Título da seção */
+.best-sellers-title {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-heading);
+    /* 30px */
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    /* #000000 */
+    text-align: left;
+    margin-bottom: 3rem;
+    line-height: 1.2;
+}
+
+/* Grid de produtos - 3 linhas × 5 colunas */
+.best-sellers-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(3, auto);
+    gap: 1rem 4rem;
+    width: 100%;
+    max-width: none;
+}
+
+/* Container individual do produto */
+.store-item {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-white);
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: hidden;
+    transition: var(--transition);
+    cursor: pointer;
+    max-width: 28rem;
+}
+
+/* Container da foto do produto com mask para zoom */
+.store-item-photo {
+    width: 100%;
+    height: 35rem;
+    /* 560px */
+    max-width: 28rem;
+    /* 448px */
+    overflow: hidden;
+    position: relative;
+    background-color: var(--color-tertiary);
+    margin: 0 auto;
+}
+
+.store-item-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+    /* Imagens originais 1080×1350px redimensionadas mantendo qualidade */
+}
+
+/* Efeito hover na foto - zoom com mask */
+.store-item:hover .store-item-photo img {
+    transform: scale(1.1);
+}
+
+/* Informações do produto */
+.store-item-info {
+    padding: 1.5rem 0 1rem 0;
+    text-align: left;
+    transition: var(--transition);
+}
+
+/* Nome do produto */
+.store-item-name {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-text);
+    /* 30px */
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    /* #000000 */
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+/* Descrição do produto */
+.store-item-description {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-base);
+    /* 18px */
+    font-weight: var(--font-weight-normal);
+    color: var(--color-text);
+    /* #000000 */
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    transition: color 0.3s ease;
+}
+
+/* Preço do produto */
+.store-item-price {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-base);
+    /* 18px */
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+    /* #000000 */
+    line-height: 1.4;
+    transition: color 0.3s ease;
+}
+
+/* Efeito hover no texto/preço - mudança para cor primary */
+.store-item:hover .store-item-name,
+.store-item:hover .store-item-description,
+.store-item:hover .store-item-price {
+    color: var(--color-primary);
+    /* #169485 */
+}
+
+/* Responsividade - Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .best-sellers-grid {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(5, auto);
+        gap: 1.5rem;
+    }
+
+    .store-item-photo {
+        height: 28rem;
+        /* 448px */
+        max-width: 22.4rem;
+        /* 358px */
+    }
+
+    .best-sellers-title {
+        font-size: 1.625rem;
+        /* 26px */
+        margin-bottom: 2.5rem;
+    }
+
+    .store-item-name {
+        font-size: 1.625rem;
+        /* 26px */
+    }
+
+    .store-item-description,
+    .store-item-price {
+        font-size: 1rem;
+        /* 16px */
+    }
+}
+
+/* Responsividade - Mobile */
+@media (max-width: 767px) {
+    .best-sellers-section {
+        padding: 2rem 0;
+        margin: 1.5rem 0;
+    }
+
+    .best-sellers-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(8, auto);
+        gap: 1rem;
+    }
+
+    .store-item-photo {
+        height: 20rem;
+        /* 320px */
+        max-width: 16rem;
+        /* 256px */
+    }
+
+    .best-sellers-title {
+        font-size: 1.5rem;
+        /* 24px */
+        margin-bottom: 2rem;
+    }
+
+    .store-item-info {
+        padding: 1rem 0 0.5rem 0;
+    }
+
+    .store-item-name {
+        font-size: 1.375rem;
+        /* 22px */
+        margin-bottom: 0.25rem;
+    }
+
+    .store-item-description,
+    .store-item-price {
+        font-size: 0.875rem;
+        /* 14px */
+    }
+
+    .store-item-description {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* ===== TEXT MARQUEE COMPONENT ===== */
+.text-marquee-section {
+    /* background-color: var(--color-primary); */
+    /* padding: 1rem 0; */
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.text-marquee-container {
+    width: 100%;
+    overflow: hidden;
+}
+
+.text-marquee-track {
+    display: flex;
+    width: fit-content;
+    animation: marquee 180s linear infinite;
+}
+
+.text-marquee-content {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.text-marquee-text {
+    font-size: var(--font-size-big);
+    /* color: var(--color-black); */
+    font-weight: 600;
+    padding-right: 4rem;
+    /* Espaçamento entre repetições */
+    white-space: nowrap;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Animação reversa para texto coreano (esquerda para direita) */
+.text-marquee-track-reverse {
+    animation: marquee-reverse 180s linear infinite;
+}
+
+@keyframes marquee-reverse {
+    0% {
+        transform: translateX(-50%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* Estilos específicos para marquee coreano */
+.text-marquee-korean {
+    /* border-top: 1px solid var(--color-tertiary); */
+    color: var(--color-white);
+    background-color: var(--color-black);
+}
+
+/* Responsividade do marquee */
+@media (max-width: 768px) {
+    .text-marquee-section {
+        padding: 0.75rem 0;
+    }
+
+    .text-marquee-text {
+        font-size: 1.5rem;
+        /* 24px */
+        padding-right: 3rem;
+    }
+
+    .text-marquee-track {
+        animation: marquee 180s linear infinite;
+    }
+
+    .text-marquee-track-reverse {
+        animation: marquee-reverse 180s linear infinite;
+    }
+}
+
+@media (max-width: 480px) {
+    .text-marquee-section {
+        padding: 0.5rem 0;
+    }
+
+    .text-marquee-text {
+        font-size: 1.25rem;
+        /* 20px */
+        padding-right: 2rem;
+    }
+
+    .text-marquee-track {
+        animation: marquee 180s linear infinite;
+    }
+
+    .text-marquee-track-reverse {
+        animation: marquee-reverse 180s linear infinite;
+    }
+}
+
+/* ========================================
+   SEÇÃO COMIDA E BEBIDA
+   ======================================== */
+
+/* Seção principal */
+.food-drinks-section {
+    width: 100%;
+    background-color: var(--color-white);
+    padding: 3rem 0;
+    margin: 2rem 0;
+}
+
+.food-drinks-section .content-container {
+    width: 100%;
+    padding: 0 var(--content-padding);
+    margin: 0 auto;
+}
+
+/* Título da seção */
+.food-drinks-title {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-heading);
+    /* 30px */
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    /* #000000 */
+    text-align: left;
+    margin-bottom: 3rem;
+    line-height: 1.2;
+}
+
+/* Grid de produtos - 2 linhas × 5 colunas */
+.food-drinks-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 1rem 4rem;
+    width: 100%;
+    max-width: none;
+}
+
+/* Container individual do produto */
+.food-drinks-item {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-white);
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: hidden;
+    transition: var(--transition);
+    cursor: pointer;
+    max-width: 28rem;
+}
+
+/* Container da foto do produto com mask para zoom */
+.food-drinks-item-photo {
+    width: 100%;
+    height: 35rem;
+    /* 560px */
+    max-width: 28rem;
+    /* 448px */
+    overflow: hidden;
+    position: relative;
+    background-color: var(--color-tertiary);
+    margin: 0 auto;
+}
+
+.food-drinks-item-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+    /* Imagens originais 1080×1350px redimensionadas mantendo qualidade */
+}
+
+/* Efeito hover na foto - zoom com mask */
+.food-drinks-item:hover .food-drinks-item-photo img {
+    transform: scale(1.1);
+}
+
+/* Informações do produto */
+.food-drinks-item-info {
+    padding: 1.5rem 0 1rem 0;
+    text-align: left;
+    transition: var(--transition);
+}
+
+/* Nome do produto */
+.food-drinks-item-name {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-text);
+    /* 30px */
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    /* #000000 */
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+/* Descrição do produto */
+.food-drinks-item-description {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-base);
+    /* 18px */
+    font-weight: var(--font-weight-normal);
+    color: var(--color-text);
+    /* #000000 */
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    transition: color 0.3s ease;
+}
+
+/* Preço do produto */
+.food-drinks-item-price {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-base);
+    /* 18px */
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+    /* #000000 */
+    line-height: 1.4;
+    transition: color 0.3s ease;
+}
+
+/* Efeito hover no texto/preço - mudança para cor primary */
+.food-drinks-item:hover .food-drinks-item-name,
+.food-drinks-item:hover .food-drinks-item-description,
+.food-drinks-item:hover .food-drinks-item-price {
+    color: var(--color-primary);
+    /* #169485 */
+}
+
+/* Responsividade - Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .food-drinks-grid {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(4, auto);
+        gap: 1.5rem;
+    }
+
+    .food-drinks-item-photo {
+        height: 28rem;
+        /* 448px */
+        max-width: 22.4rem;
+        /* 358px */
+    }
+
+    .food-drinks-title {
+        font-size: 1.625rem;
+        /* 26px */
+        margin-bottom: 2.5rem;
+    }
+
+    .food-drinks-item-name {
+        font-size: 1.625rem;
+        /* 26px */
+    }
+
+    .food-drinks-item-description,
+    .food-drinks-item-price {
+        font-size: 1rem;
+        /* 16px */
+    }
+}
+
+/* Responsividade - Mobile */
+@media (max-width: 767px) {
+    .food-drinks-section {
+        padding: 2rem 0;
+        margin: 1.5rem 0;
+    }
+
+    .food-drinks-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(5, auto);
+        gap: 1rem;
+    }
+
+    .food-drinks-item-photo {
+        height: 20rem;
+        /* 320px */
+        max-width: 16rem;
+        /* 256px */
+    }
+
+    .food-drinks-title {
+        font-size: 1.5rem;
+        /* 24px */
+        margin-bottom: 2rem;
+    }
+
+    .food-drinks-item-info {
+        padding: 1rem 0 0.5rem 0;
+    }
+
+    .food-drinks-item-name {
+        font-size: 1.375rem;
+        /* 22px */
+        margin-bottom: 0.25rem;
+    }
+
+    .food-drinks-item-description,
+    .food-drinks-item-price {
+        font-size: 0.875rem;
+        /* 14px */
+    }
+
+    .food-drinks-item-description {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* ========================================
+   SEÇÃO PAPELARIA
+   ======================================== */
+
+.papelaria-section {
+    width: 100%;
+    background-color: var(--color-white);
+    padding: 3rem 0;
+    margin: 2rem 0;
+}
+
+.papelaria-section .content-container {
+    width: 100%;
+    padding: 0 var(--content-padding);
+    margin: 0 auto;
+}
+
+/* Título da seção */
+.papelaria-title {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-heading);
+    /* 30px */
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    /* #000000 */
+    text-align: left;
+    margin-bottom: 3rem;
+    line-height: 1.2;
+}
+
+/* Grid de produtos - 2 linhas × 5 colunas */
+.papelaria-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 1rem 4rem;
+    width: 100%;
+    max-width: none;
+}
+
+/* Container individual do produto */
+.papelaria-item {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-white);
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: hidden;
+    transition: var(--transition);
+    cursor: pointer;
+    max-width: 28rem;
+}
+
+/* Container da foto do produto com mask para zoom */
+.papelaria-item-photo {
+    width: 100%;
+    height: 35rem;
+    /* 560px */
+    max-width: 28rem;
+    /* 448px */
+    overflow: hidden;
+    position: relative;
+    background-color: var(--color-tertiary);
+    margin: 0 auto;
+}
+
+.papelaria-item-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+    /* Imagens originais 1080×1350px redimensionadas mantendo qualidade */
+}
+
+/* Efeito hover na foto - zoom com mask */
+.papelaria-item:hover .papelaria-item-photo img {
+    transform: scale(1.1);
+}
+
+/* Informações do produto */
+.papelaria-item-info {
+    padding: 1.5rem 0 1rem 0;
+    text-align: left;
+    transition: var(--transition);
+}
+
+/* Nome do produto */
+.papelaria-item-name {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-text);
+    /* 30px */
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    /* #000000 */
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+/* Descrição do produto */
+.papelaria-item-description {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-base);
+    /* 18px */
+    font-weight: var(--font-weight-normal);
+    color: var(--color-text);
+    /* #000000 */
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    transition: color 0.3s ease;
+}
+
+/* Preço do produto */
+.papelaria-item-price {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-base);
+    /* 18px */
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+    /* #000000 */
+    line-height: 1.4;
+    transition: color 0.3s ease;
+}
+
+/* Efeito hover no texto/preço - mudança para cor primary */
+.papelaria-item:hover .papelaria-item-name,
+.papelaria-item:hover .papelaria-item-description,
+.papelaria-item:hover .papelaria-item-price {
+    color: var(--color-primary);
+    /* #169485 */
+}
+
+/* Responsividade - Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .papelaria-grid {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(4, auto);
+        gap: 1.5rem;
+    }
+
+    .papelaria-item-photo {
+        height: 28rem;
+        /* 448px */
+        max-width: 22.4rem;
+        /* 358px */
+    }
+
+    .papelaria-title {
+        font-size: 1.625rem;
+        /* 26px */
+        margin-bottom: 2.5rem;
+    }
+
+    .papelaria-item-name {
+        font-size: 1.625rem;
+        /* 26px */
+    }
+
+    .papelaria-item-description,
+    .papelaria-item-price {
+        font-size: 1rem;
+        /* 16px */
+    }
+}
+
+/* Responsividade - Mobile */
+@media (max-width: 767px) {
+    .papelaria-section {
+        padding: 2rem 0;
+        margin: 1.5rem 0;
+    }
+
+    .papelaria-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(5, auto);
+        gap: 1rem;
+    }
+
+    .papelaria-item-photo {
+        height: 20rem;
+        /* 320px */
+        max-width: 16rem;
+        /* 256px */
+    }
+
+    .papelaria-title {
+        font-size: 1.5rem;
+        /* 24px */
+        margin-bottom: 2rem;
+    }
+
+    .papelaria-item-info {
+        padding: 1rem 0 0.5rem 0;
+    }
+
+    .papelaria-item-name {
+        font-size: 1.375rem;
+        /* 22px */
+        margin-bottom: 0.25rem;
+    }
+
+    .papelaria-item-description,
+    .papelaria-item-price {
+        font-size: 0.875rem;
+        /* 14px */
+    }
+
+    .papelaria-item-description {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* ========================================
+   SEÇÃO PELÚCIAS
+   ======================================== */
+
+.pelucias-section {
+    width: 100%;
+    background-color: var(--color-white);
+    padding: 3rem 0;
+    margin: 2rem 0;
+}
+
+.pelucias-section .content-container {
+    width: 100%;
+    padding: 0 var(--content-padding);
+    margin: 0 auto;
+}
+
+/* Título da seção */
+.pelucias-title {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-heading);
+    /* 30px */
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    /* #000000 */
+    text-align: left;
+    margin-bottom: 3rem;
+    line-height: 1.2;
+}
+
+/* Grid de produtos - 2 linhas × 5 colunas */
+.pelucias-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 1rem 4rem;
+    width: 100%;
+    max-width: none;
+}
+
+/* Container individual do produto */
+.pelucias-item {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-white);
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: hidden;
+    transition: var(--transition);
+    cursor: pointer;
+    max-width: 28rem;
+}
+
+/* Container da foto do produto com mask para zoom */
+.pelucias-item-photo {
+    width: 100%;
+    height: 35rem;
+    /* 560px */
+    max-width: 28rem;
+    /* 448px */
+    overflow: hidden;
+    position: relative;
+    background-color: var(--color-tertiary);
+    margin: 0 auto;
+}
+
+.pelucias-item-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+    /* Imagens originais 1080×1350px redimensionadas mantendo qualidade */
+}
+
+/* Efeito hover na foto - zoom com mask */
+.pelucias-item:hover .pelucias-item-photo img {
+    transform: scale(1.1);
+}
+
+/* Informações do produto */
+.pelucias-item-info {
+    padding: 1.5rem 0 1rem 0;
+    text-align: left;
+    transition: var(--transition);
+}
+
+/* Nome do produto */
+.pelucias-item-name {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-text);
+    /* 30px */
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    /* #000000 */
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+/* Descrição do produto */
+.pelucias-item-description {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-base);
+    /* 18px */
+    font-weight: var(--font-weight-normal);
+    color: var(--color-text);
+    /* #000000 */
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    transition: color 0.3s ease;
+}
+
+/* Preço do produto */
+.pelucias-item-price {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-base);
+    /* 18px */
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+    /* #000000 */
+    line-height: 1.4;
+    transition: color 0.3s ease;
+}
+
+/* Efeito hover no texto/preço - mudança para cor primary */
+.pelucias-item:hover .pelucias-item-name,
+.pelucias-item:hover .pelucias-item-description,
+.pelucias-item:hover .pelucias-item-price {
+    color: var(--color-primary);
+    /* #169485 */
+}
+
+/* Responsividade - Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .pelucias-grid {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(4, auto);
+        gap: 1.5rem;
+    }
+
+    .pelucias-item-photo {
+        height: 28rem;
+        /* 448px */
+        max-width: 22.4rem;
+        /* 358px */
+    }
+
+    .pelucias-title {
+        font-size: 1.625rem;
+        /* 26px */
+        margin-bottom: 2.5rem;
+    }
+
+    .pelucias-item-name {
+        font-size: 1.625rem;
+        /* 26px */
+    }
+
+    .pelucias-item-description,
+    .pelucias-item-price {
+        font-size: 1rem;
+        /* 16px */
+    }
+}
+
+/* Responsividade - Mobile */
+@media (max-width: 767px) {
+    .pelucias-section {
+        padding: 2rem 0;
+        margin: 1.5rem 0;
+    }
+
+    .pelucias-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(5, auto);
+        gap: 1rem;
+    }
+
+    .pelucias-item-photo {
+        height: 20rem;
+        /* 320px */
+        max-width: 16rem;
+        /* 256px */
+    }
+
+    .pelucias-title {
+        font-size: 1.5rem;
+        /* 24px */
+        margin-bottom: 2rem;
+    }
+
+    .pelucias-item-info {
+        padding: 1rem 0 0.5rem 0;
+    }
+
+    .pelucias-item-name {
+        font-size: 1.375rem;
+        /* 22px */
+        margin-bottom: 0.25rem;
+    }
+
+    .pelucias-item-description,
+    .pelucias-item-price {
+        font-size: 0.875rem;
+        /* 14px */
+    }
+
+    .pelucias-item-description {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* ==========================================================================
+   PAGE TEMPLATES - Estilos para páginas estáticas
+   ========================================================================== */
+
+/* Page Content */
+.page-content {
+    padding: 2rem 0;
+}
+
+.page-title {
+    font-size: var(--font-size-heading);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    margin-bottom: 2rem;
+    text-align: left;
+}
+
+.page-content-body {
+    font-size: var(--font-size-text);
+    line-height: var(--line-height-text);
+    color: var(--color-text);
+    width: 100%;
+}
+
+.page-content-body h1,
+.page-content-body h2,
+.page-content-body h3,
+.page-content-body h4,
+.page-content-body h5,
+.page-content-body h6 {
+    font-size: var(--font-size-heading);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    margin: 2rem 0 1rem 0;
+    line-height: var(--line-height-heading);
+}
+
+.page-content-body p {
+    margin-bottom: 1.5rem;
+}
+
+.page-content-body ul,
+.page-content-body ol {
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+}
+
+.page-content-body li {
+    margin-bottom: 0.5rem;
+}
+
+.page-content-body a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    transition: var(--transition);
+}
+
+.page-content-body a:hover {
+    color: var(--color-secondary);
+}
+
+.page-content-body strong {
+    font-weight: var(--font-weight-semibold);
+}
+
+.page-content-body em {
+    font-style: italic;
+}
+
+/* Page Links (pagination for multi-page content) */
+.page-links {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.page-links a {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    margin: 0 0.25rem;
+    background: var(--color-tertiary);
+    color: var(--color-text);
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.page-links a:hover {
+    background: var(--color-primary);
+    color: var(--color-white);
+}
+
+/* Edit Link */
+.edit-link {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.5rem 1rem;
+    background: var(--color-tertiary);
+    color: var(--color-text);
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-small);
+    transition: var(--transition);
+}
+
+.edit-link:hover {
+    background: var(--color-primary);
+    color: var(--color-white);
+}
+
+/* Screen Reader Text */
+.screen-reader-text {
+    clip: rect(1px, 1px, 1px, 1px);
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+
+/* Responsive adjustments for pages */
+@media (max-width: 768px) {
+    .page-content {
+        padding: 1rem 0;
+    }
+
+    .page-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .page-content-body {
+        font-size: 1rem;
+    }
+
+    .page-content-body h1,
+    .page-content-body h2,
+    .page-content-body h3,
+    .page-content-body h4,
+    .page-content-body h5,
+    .page-content-body h6 {
+        font-size: 1.25rem;
+        margin: 1.5rem 0 1rem 0;
+    }
+}
+
+/* ========================================
+   WOOCOMMERCE - PÁGINAS DE CATEGORIA E LOJA
+   ======================================== */
+
+/* Container principal das páginas WooCommerce - SEM PADDING LATERAL */
+.woocommerce {
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Cabeçalho das páginas de produtos */
+.woocommerce-products-header {
+    margin-bottom: 3rem;
+    text-align: left;
+    padding: 0 var(--content-padding);
+}
+
+.woocommerce-products-header__title {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-heading);
+    /* 30px */
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    /* #000000 */
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+/* Descrição da categoria */
+.woocommerce-archive-description {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-base);
+    /* 18px */
+    color: var(--color-text);
+    line-height: 1.5;
+    margin-bottom: 2rem;
+}
+
+/* Controles de ordenação e resultados - COM PADDING LATERAL */
+.woocommerce-result-count,
+.woocommerce-ordering {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-base);
+    color: var(--color-text);
+    margin-bottom: 2rem;
+    padding: 0 var(--content-padding);
+}
+
+/* Remover estilos padrão do WooCommerce */
+.woocommerce ul.products {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: block;
+}
+
+.woocommerce ul.products li.product {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: block;
+}
+
+/* Grid de produtos - IGUAL À HOME, SEM PADDING LATERAL */
+.woocommerce .best-sellers-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem 4rem;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0 var(--content-padding);
+    /* APENAS AQUI o padding lateral */
+}
+
+/* Links dos produtos */
+.store-item-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    width: 100%;
+}
+
+.store-item-link:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Paginação - COM PADDING LATERAL */
+.woocommerce nav.woocommerce-pagination {
+    margin-top: 3rem;
+    text-align: center;
+    padding: 0 var(--content-padding);
+}
+
+.woocommerce nav.woocommerce-pagination ul {
+    display: inline-flex;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.woocommerce nav.woocommerce-pagination ul li {
+    margin: 0;
+}
+
+.woocommerce nav.woocommerce-pagination ul li a,
+.woocommerce nav.woocommerce-pagination ul li span {
+    display: block;
+    padding: 0.75rem 1rem;
+    font-family: var(--font-primary);
+    font-size: var(--font-size-base);
+    color: var(--color-text);
+    text-decoration: none;
+    border: 1px solid var(--color-tertiary);
+    transition: var(--transition);
+}
+
+.woocommerce nav.woocommerce-pagination ul li a:hover,
+.woocommerce nav.woocommerce-pagination ul li span.current {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border-color: var(--color-primary);
+}
+
+/* Responsividade para WooCommerce */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .woocommerce .best-sellers-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .woocommerce .best-sellers-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .woocommerce-products-header__title {
+        font-size: 1.5rem;
+    }
+}
+
+/* ========================================
+   REGRAS GLOBAIS DE ALINHAMENTO DE HEADERS
+   ======================================== */
+
+/* Garantir que TODOS os headers sempre fiquem alinhados à esquerda */
+.entry-header,
+.entry-title,
+.page-header,
+.page-title,
+.post-header,
+.post-title,
+.woocommerce-products-header,
+.woocommerce-products-header__title,
+.archive-header,
+.archive-title,
+.category-header,
+.category-title,
+.product-header,
+.product-title,
+h1.entry-title,
+h2.entry-title,
+h3.entry-title,
+h4.entry-title,
+h5.entry-title,
+h6.entry-title {
+    text-align: left !important;
+}
+
+/* Garantir que títulos dentro de containers também fiquem à esquerda */
+.content-area h1,
+.content-area h2,
+.content-area h3,
+.content-area h4,
+.content-area h5,
+.content-area h6,
+.site-main h1,
+.site-main h2,
+.site-main h3,
+.site-main h4,
+.site-main h5,
+.site-main h6,
+.page-content h1,
+.page-content h2,
+.page-content h3,
+.page-content h4,
+.page-content h5,
+.page-content h6 {
+    text-align: left !important;
+}
+
+/* ========================================
+   LAYOUT PÁGINA DE PRODUTO INDIVIDUAL
+   ======================================== */
+
+/* Container principal do produto */
+.single-product-container {
+    width: 100%;
+}
+
+/* Layout principal: 2/3 galeria + 1/3 summary */
+.single-product-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+    align-items: start;
+}
+
+/* Container da galeria de fotos (2/3) */
+.product-gallery-container {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Galeria de imagens do produto */
+.woocommerce-product-gallery {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Wrapper da galeria */
+.woocommerce-product-gallery__wrapper {
+    width: 100%;
+    max-width: 67.5rem;
+    /* 1080px em rem */
+}
+
+/* Imagem principal do produto - 1080x1350px sem crop */
+.woocommerce-product-gallery__image img,
+.woocommerce-product-gallery__wrapper img,
+.product-gallery-image {
+    width: 100%;
+    height: auto;
+    max-width: 67.5rem;
+    /* 1080px em rem */
+    aspect-ratio: 1080/1350;
+    object-fit: contain;
+    /* Sem crop - mantém proporção original */
+    object-position: center;
+    border-radius: 0;
+    display: block;
+}
+
+/* Garantir que as miniaturas da galeria também sigam o padrão */
+.woocommerce-product-gallery__trigger img,
+.flex-control-thumbs img {
+    aspect-ratio: 1080/1350;
+    object-fit: contain;
+    width: 100%;
+    height: auto;
+}
+
+/* Container do summary (1/3) */
+.product-summary-container {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Summary: nome, preço, descrição, SKU */
+.summary.entry-summary {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+/* Sobrescrever CSS padrão do WooCommerce para o summary */
+.woocommerce #content div.product div.summary,
+.woocommerce div.product div.summary,
+.woocommerce-page #content div.product div.summary,
+.woocommerce-page div.product div.summary {
+    width: 100% !important;
+    float: none !important;
+    clear: none;
+}
+
+/* Título do produto */
+.summary .product_title {
+    font-family: var(--font-primary);
+    font-size: 1.875rem;
+    /* 30px */
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 1rem;
+    text-align: left !important;
+}
+
+/* Preço do produto */
+.summary .price {
+    font-family: var(--font-primary);
+    font-size: 1.5rem;
+    /* 24px */
+    font-weight: 600;
+    color: var(--color-primary);
+    margin-bottom: 1.5rem;
+}
+
+/* Descrição curta do produto */
+.summary .woocommerce-product-details__short-description {
+    font-family: var(--font-primary);
+    font-size: 1.125rem;
+    /* 18px */
+    color: var(--color-text);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+/* Formulário de adicionar ao carrinho */
+.summary .cart {
+    margin-bottom: 1.5rem;
+}
+
+/* Tabela de variações */
+.summary .variations {
+    margin-bottom: 1.5rem;
+}
+
+.summary .variations td {
+    padding: 0.5rem 0;
+    vertical-align: middle;
+}
+
+.summary .variations .label {
+    font-family: var(--font-primary);
+    font-size: 1.125rem;
+    /* 18px */
+    font-weight: 500;
+    color: var(--color-text);
+    padding-right: 1rem;
+    width: auto;
+}
+
+/* Select de variações - 1/3 da largura do summary */
+.summary .variations select {
+    width: 33.333%;
+    /* 1/3 da largura */
+    min-width: 12.5rem;
+    /* 200px mínimo */
+    max-width: 15rem;
+    /* 240px máximo */
+    font-family: var(--font-primary);
+    font-size: 1.125rem;
+    /* 18px */
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--color-tertiary);
+    border-radius: 0.5rem;
+    background-color: white;
+    color: var(--color-text);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.summary .variations select:focus {
+    border-color: var(--color-primary);
+    outline: none;
+}
+
+/* Campo de quantidade */
+.summary .cart .quantity input {
+    width: 33.333%;
+    /* 1/3 da largura */
+    min-width: 6rem;
+    /* 96px mínimo */
+    max-width: 8rem;
+    /* 128px máximo */
+    font-family: var(--font-primary);
+    font-size: 1.125rem;
+    /* 18px */
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--color-tertiary);
+    border-radius: 0.5rem;
+    background-color: white;
+    color: var(--color-text);
+    text-align: center;
+}
+
+/* Botão adicionar ao carrinho - Seletores específicos para sobrescrever WooCommerce */
+.woocommerce .summary .cart .single_add_to_cart_button,
+.woocommerce-page .summary .cart .single_add_to_cart_button,
+.summary .cart .single_add_to_cart_button.button,
+.summary .cart .single_add_to_cart_button.button.alt,
+.woocommerce .summary .cart .single_add_to_cart_button.button.alt {
+    width: 100% !important;
+    max-width: none !important;
+    font-family: var(--font-primary) !important;
+    font-size: 1.125rem !important;
+    /* 18px */
+    font-weight: 600 !important;
+    padding: 1rem 2rem !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background-color: var(--color-yellow) !important;
+    color: var(--color-black) !important;
+    cursor: pointer !important;
+    transition: background-color 0.3s ease, color 0.3s ease !important;
+    margin-top: 1rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.woocommerce .summary .cart .single_add_to_cart_button:hover,
+.woocommerce-page .summary .cart .single_add_to_cart_button:hover,
+.summary .cart .single_add_to_cart_button.button:hover,
+.summary .cart .single_add_to_cart_button.button.alt:hover,
+.woocommerce .summary .cart .single_add_to_cart_button.button.alt:hover {
+    background-color: var(--color-black) !important;
+    color: var(--color-yellow) !important;
+    border: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.woocommerce .summary .cart .single_add_to_cart_button:focus,
+.woocommerce-page .summary .cart .single_add_to_cart_button:focus,
+.summary .cart .single_add_to_cart_button.button:focus,
+.summary .cart .single_add_to_cart_button.button.alt:focus,
+.woocommerce .summary .cart .single_add_to_cart_button.button.alt:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    background-color: var(--color-yellow) !important;
+    color: var(--color-black) !important;
+}
+
+/* Meta informações (SKU, categorias, tags) */
+.summary .product_meta {
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    /* 16px */
+    color: var(--color-text);
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-tertiary);
+}
+
+/* Container das abas (largura total) */
+.product-tabs-container {
+    width: 100%;
+    margin-top: 3rem;
+}
+
+/* Abas de descrição e informação adicional */
+.woocommerce-tabs {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Lista de abas */
+.woocommerce-tabs .wc-tabs {
+    display: flex;
+    border-bottom: 2px solid var(--color-tertiary);
+    margin-bottom: 2rem;
+    list-style: none;
+    padding: 0;
+    margin-left: 0;
+}
+
+.woocommerce-tabs .wc-tabs li {
+    margin-right: 2rem;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.woocommerce-tabs .wc-tabs li a {
+    font-family: var(--font-primary);
+    font-size: 1.125rem;
+    /* 18px */
+    font-weight: 600;
+    color: var(--color-text);
+    text-decoration: none;
+    padding: 1rem 0;
+    border-bottom: 3px solid transparent;
+    transition: var(--transition);
+    display: block;
+}
+
+.woocommerce-tabs .wc-tabs li.active a,
+.woocommerce-tabs .wc-tabs li a:hover {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+    text-decoration: none;
+}
+
+/* Conteúdo das abas */
+.woocommerce-tabs .wc-tab {
+    width: 100%;
+    font-family: var(--font-primary);
+    font-size: 1.125rem;
+    /* 18px */
+    color: var(--color-text);
+    line-height: 1.6;
+    padding: 0;
+    margin: 0;
+}
+
+.woocommerce-tabs .wc-tab h2 {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-heading);
+    /* 30px */
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    text-align: left !important;
+    margin-bottom: 1.5rem;
+}
+
+.woocommerce-tabs .wc-tab p {
+    font-family: var(--font-primary);
+    font-size: 1.125rem;
+    /* 18px */
+    color: var(--color-text);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+/* Tabela de informações adicionais */
+.woocommerce-tabs .wc-tab table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.woocommerce-tabs .wc-tab table th,
+.woocommerce-tabs .wc-tab table td {
+    font-family: var(--font-primary);
+    font-size: 1.125rem;
+    /* 18px */
+    color: var(--color-text);
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--color-tertiary);
+    text-align: left;
+}
+
+.woocommerce-tabs .wc-tab table th {
+    font-weight: 600;
+    background-color: rgba(241, 240, 238, 0.5);
+}
+
+/* Layout responsivo */
+@media (max-width: 768px) {
+    .single-product-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .summary .product_title {
+        font-size: 1.5rem;
+        /* 24px */
+    }
+
+    .summary .price {
+        font-size: 1.25rem;
+        /* 20px */
+    }
+}
+
+/* ===================================================================
+   CORREÇÕES DE PREÇO WOOCOMMERCE - COR PRETA
+   =================================================================== */
+
+/* Correção da cor do preço para var(--color-black) em todas as páginas do WooCommerce */
+.woocommerce .price,
+.woocommerce .price .amount,
+.woocommerce .price .woocommerce-Price-amount,
+.woocommerce .price .woocommerce-Price-currencySymbol,
+.woocommerce .price ins,
+.woocommerce .price ins .amount,
+.woocommerce .price ins .woocommerce-Price-amount,
+.woocommerce .price del,
+.woocommerce .price del .amount,
+.woocommerce .price del .woocommerce-Price-amount,
+.woocommerce-page .price,
+.woocommerce-page .price .amount,
+.woocommerce-page .price .woocommerce-Price-amount,
+.woocommerce-page .price .woocommerce-Price-currencySymbol,
+.woocommerce-page .price ins,
+.woocommerce-page .price ins .amount,
+.woocommerce-page .price ins .woocommerce-Price-amount,
+.woocommerce-page .price del,
+.woocommerce-page .price del .amount,
+.woocommerce-page .price del .woocommerce-Price-amount,
+.summary .price,
+.summary .price .amount,
+.summary .price .woocommerce-Price-amount,
+.summary .price .woocommerce-Price-currencySymbol,
+.summary .price ins,
+.summary .price ins .amount,
+.summary .price ins .woocommerce-Price-amount,
+.summary .price del,
+.summary .price del .amount,
+.summary .price del .woocommerce-Price-amount,
+.product-price,
+.product-price .amount,
+.product-price .woocommerce-Price-amount,
+.product-price .woocommerce-Price-currencySymbol,
+.product-subtotal,
+.product-subtotal .amount,
+.product-subtotal .woocommerce-Price-amount,
+.product-subtotal .woocommerce-Price-currencySymbol,
+.cart-subtotal .amount,
+.cart-subtotal .woocommerce-Price-amount,
+.cart-subtotal .woocommerce-Price-currencySymbol,
+.order-total .amount,
+.order-total .woocommerce-Price-amount,
+.order-total .woocommerce-Price-currencySymbol,
+.shop_table .amount,
+.shop_table .woocommerce-Price-amount,
+.shop_table .woocommerce-Price-currencySymbol,
+.store-item-price,
+.store-item-price .amount,
+.store-item-price .woocommerce-Price-amount,
+.store-item-price .woocommerce-Price-currencySymbol,
+.food-drinks-item-price,
+.food-drinks-item-price .amount,
+.food-drinks-item-price .woocommerce-Price-amount,
+.food-drinks-item-price .woocommerce-Price-currencySymbol,
+.papelaria-item-price,
+.papelaria-item-price .amount,
+.papelaria-item-price .woocommerce-Price-amount,
+.papelaria-item-price .woocommerce-Price-currencySymbol,
+.pelucias-item-price,
+.pelucias-item-price .amount,
+.pelucias-item-price .woocommerce-Price-amount,
+.pelucias-item-price .woocommerce-Price-currencySymbol {
+    color: var(--color-black) !important;
+}
+
+/* Garantir que preços em tabelas também usem a cor correta */
+.woocommerce table.shop_table td.product-price,
+.woocommerce table.shop_table td.product-subtotal,
+.woocommerce-page table.shop_table td.product-price,
+.woocommerce-page table.shop_table td.product-subtotal,
+.woocommerce .cart-collaterals .cart_totals table td,
+.woocommerce-page .cart-collaterals .cart_totals table td,
+.woocommerce .checkout .shop_table td,
+.woocommerce-page .checkout .shop_table td {
+    color: var(--color-black) !important;
+}
+
+/* Correção específica para preços em loops de produtos */
+.woocommerce ul.products li.product .price,
+.woocommerce ul.products li.product .price .amount,
+.woocommerce ul.products li.product .price .woocommerce-Price-amount,
+.woocommerce ul.products li.product .price .woocommerce-Price-currencySymbol,
+.woocommerce-page ul.products li.product .price,
+.woocommerce-page ul.products li.product .price .amount,
+.woocommerce-page ul.products li.product .price .woocommerce-Price-amount,
+.woocommerce-page ul.products li.product .price .woocommerce-Price-currencySymbol {
+    color: var(--color-black) !important;
+}
+
+/* =============================================================
+   WooCommerce: Produtos relacionados - Heading H2
+   Regras globais: fonte Inter, tamanho 30px (1.875rem), cor #000
+   Espaçamento abaixo do título para separar do grid de produtos
+   ============================================================= */
+.woocommerce .related.products>h2,
+.woocommerce .related>h2,
+.related.products>h2 {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-heading);
+    line-height: 1.2;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    margin-bottom: 1.5rem;
+}
+
+/* Garantir consistência em diferentes templates do WooCommerce */
+.woocommerce .upsells.products>h2,
+.woocommerce .cross-sells>h2 {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-heading);
+    line-height: 1.2;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    margin-bottom: 1.5rem;
+}
