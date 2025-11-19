@@ -584,3 +584,63 @@ function mimoskorea_remove_in_stock_text($availability, $product)
     return $availability;
 }
 add_filter('woocommerce_get_availability', 'mimoskorea_remove_in_stock_text', 10, 2);
+
+/**
+ * Remove /produto/ and /categoria-produto/ slugs from WooCommerce URLs.
+ *
+ * This code ensures that the URLs for products and product categories are clean,
+ * removing the default WooCommerce slugs for better SEO and user experience.
+ * It handles URL generation and request parsing to prevent 404 errors.
+ */
+
+// 1. Remove /produto/ slug from product post type link
+add_filter('post_type_link', 'mimoskorea_remove_product_slug', 10, 3);
+function mimoskorea_remove_product_slug($post_link, $post, $leavename)
+{
+    if ('product' !== $post->post_type || 'publish' !== $post->post_status) {
+        return $post_link;
+    }
+    $post_link = str_replace('/produto/', '/', $post_link);
+    return $post_link;
+}
+
+// 2. Remove /categoria-produto/ slug from product category term link
+add_filter('term_link', 'mimoskorea_remove_product_cat_slug', 10, 3);
+function mimoskorea_remove_product_cat_slug($term_link, $term, $taxonomy)
+{
+    if ($taxonomy === 'product_cat') {
+        $term_link = str_replace('/categoria-produto/', '/', $term_link);
+    }
+    return $term_link;
+}
+
+// 3. Handle parsing of clean URLs for products and categories.
+add_action('parse_request', 'mimoskorea_parse_request_for_clean_urls');
+function mimoskorea_parse_request_for_clean_urls(&$wp)
+{
+    if (isset($wp->request)) {
+        $path = trim($wp->request, '/');
+
+        // Check if it's a product first (more specific)
+        $post = get_page_by_path($path, OBJECT, 'product');
+        if ($post) {
+            $wp->query_vars = [
+                'name'      => $path,
+                'post_type' => 'product',
+            ];
+            return;
+        }
+
+        // Then check if it's a product category
+        $term = get_term_by('slug', $path, 'product_cat');
+        if ($term && !is_wp_error($term)) {
+            $wp->query_vars = [
+                'product_cat' => $path,
+            ];
+            return;
+        }
+    }
+}
+
+// 4. Flush rewrite rules on theme activation.
+add_action('after_switch_theme', 'flush_rewrite_rules');
