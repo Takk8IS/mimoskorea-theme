@@ -46,6 +46,10 @@ REGRAS OBRIGATÓRIAS DO PROJETO:
     /* Vermelho */
     --color-white: #ffffff;
     --color-black: #000000;
+    --color-primary-dark: #106E63;
+    --color-secondary-dark: #158F99;
+    --color-background: #ffffff;
+    --color-border: #F1F0EE;
 
     /* Tipografia - Google Font Inter (ÚNICA fonte permitida no projeto) */
     --font-primary: 'Inter', sans-serif;
@@ -163,6 +167,50 @@ a:hover {
     max-width: var(--container-max-width);
     margin: 0 auto;
     padding: 0 1rem;
+}
+
+/* WooCommerce - Product Attributes Table (Mimos Korea design) */
+.woocommerce table.shop_attributes {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--color-white);
+    font-family: var(--font-primary);
+}
+
+.woocommerce table.shop_attributes,
+.woocommerce table.shop_attributes th,
+.woocommerce table.shop_attributes td {
+    padding: 0.75rem 0;
+    /* 12px */
+    line-height: 1.6;
+    border-top: 0;
+    border-bottom: 1px solid var(--color-tertiary);
+    /* sem dotted; cor oficial */
+    color: var(--color-text);
+    font-size: var(--font-size-text);
+    /* 18px */
+    vertical-align: top;
+}
+
+.woocommerce table.shop_attributes th {
+    text-align: left;
+    /* alinhar à esquerda */
+    font-weight: var(--font-weight-bold);
+    width: 12rem;
+    /* ~192px, usando rem */
+    margin: 0;
+}
+
+.woocommerce table.shop_attributes td {
+    font-style: normal;
+    /* remover itálico */
+    margin: 0;
+}
+
+.woocommerce table.shop_attributes tr:nth-child(2n) td,
+.woocommerce table.shop_attributes tr:nth-child(2n) th {
+    background: transparent;
+    /* remover zebra padrão */
 }
 
 /* Tarja Promocional Fixa */
@@ -487,7 +535,7 @@ gpay-button *,
 }
 
 .btn-secondary:hover {
-    background: #1a202c;
+    background: var(--color-secondary-dark);
 }
 
 /* Forms */
@@ -507,7 +555,7 @@ textarea:focus,
 select:focus {
     outline: none;
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(237, 117, 26, 0.1);
+    box-shadow: 0 0 0 3px rgba(22, 148, 133, 0.2);
 }
 
 /* WordPress Core */
@@ -1013,7 +1061,7 @@ a.wc-block-components-button.wc-block-components-totals-coupon__button.contained
     font-size: var(--font-size-heading);
     font-weight: 600;
     margin: 0;
-    color: #000000;
+    color: var(--color-text);
     padding: 1rem 0;
     text-align: left;
     flex-shrink: 0;
@@ -1222,8 +1270,8 @@ a.wc-block-components-button.wc-block-components-totals-coupon__button.contained
 .category-name {
     font-size: var(--font-size-text);
     font-weight: 500;
-    color: #000000;
-    font-family: 'Inter', sans-serif;
+    color: var(--color-text);
+    font-family: var(--font-primary);
     line-height: 1.2;
     max-width: 8rem;
     word-wrap: break-word;

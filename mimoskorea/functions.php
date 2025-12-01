@@ -114,14 +114,9 @@ function mimoskorea_remove_wp_editor_widgets()
 }
 add_action('admin_enqueue_scripts', 'mimoskorea_remove_wp_editor_widgets', 100);
 
-/**
- * Habilita CSS Classes nos menus do WordPress
- */
-function mimoskorea_enable_menu_css_classes($walker)
-{
-    return $walker;
-}
-add_filter('wp_nav_menu_args', 'mimoskorea_enable_menu_css_classes');
+// Removido: filtro incorreto em wp_nav_menu_args que não alterava $args
+// e podia causar comportamento inesperado. Mantemos apenas o suporte a menus
+// e a injeção de ícones via wp_nav_menu_objects.
 
 /**
  * Adiciona suporte para CSS Classes nos menus
@@ -213,20 +208,15 @@ function get_best_selling_products(int $limit = 12): array
 
     if (empty($products)) {
         // Fallback: produtos mais recentes se não houver dados de vendas
+        // Remove meta_query obsoleta de _visibility (depreciado no WooCommerce);
+        // confiamos em products publicados por padrão.
         $fallback_query = new WP_Query(array(
             'post_type' => 'product',
             'post_status' => 'publish',
             'posts_per_page' => $limit,
             'orderby' => 'date',
             'order' => 'DESC',
-            'fields' => 'ids',
-            'meta_query' => array(
-                array(
-                    'key' => '_visibility',
-                    'value' => array('catalog', 'visible'),
-                    'compare' => 'IN'
-                )
-            )
+            'fields' => 'ids'
         ));
 
         $result = $fallback_query->posts;
@@ -438,9 +428,6 @@ function mimoskorea_remove_product_meta()
 
     // Remove o wrapper do SKU especificamente
     add_filter('wc_product_sku_enabled', '__return_false');
-
-    // Remove categorias e tags do produto
-    remove_action('woocommerce_single_product_summary', 'woocommerce_template_single_meta', 40);
 }
 add_action('init', 'mimoskorea_remove_product_meta');
 
@@ -621,7 +608,7 @@ function mimoskorea_parse_request_for_clean_urls(&$wp)
     if (isset($wp->request)) {
         $path = trim($wp->request, '/');
 
-        // Check if it's a product first (more specific)
+        // 1. Check if it's a product first (exact match)
         $post = get_page_by_path($path, OBJECT, 'product');
         if ($post) {
             $wp->query_vars = [
@@ -631,16 +618,91 @@ function mimoskorea_parse_request_for_clean_urls(&$wp)
             return;
         }
 
-        // Then check if it's a product category
+        // 2. Check if it's a product category (exact match)
         $term = get_term_by('slug', $path, 'product_cat');
         if ($term && !is_wp_error($term)) {
             $wp->query_vars = [
                 'product_cat' => $path,
             ];
+            // Support query param page=X for pagination on clean category URLs
+            if (isset($_GET['page'])) {
+                $paged = intval($_GET['page']);
+                if ($paged > 1) {
+                    $wp->query_vars['paged'] = $paged;
+                }
+            }
             return;
+        }
+
+        // 3. Check for pagination (e.g., category-slug/page/2)
+        if (preg_match('#(.+?)/page/([0-9]+)/?$#', $path, $matches)) {
+            $base_path = $matches[1];
+            $paged = intval($matches[2]);
+
+            // Check if the base path is a product category
+            $term = get_term_by('slug', $base_path, 'product_cat');
+            if ($term && !is_wp_error($term)) {
+                $wp->query_vars = [
+                    'product_cat' => $base_path,
+                    'paged'       => $paged,
+                ];
+                return;
+            }
         }
     }
 }
 
+/**
+ * Force WooCommerce category pagination links to use ?page=X instead of /page/X/.
+ */
+add_filter('woocommerce_pagination_args', 'mimoskorea_woocommerce_pagination_args');
+function mimoskorea_woocommerce_pagination_args($args)
+{
+    if (function_exists('is_tax') && is_tax('product_cat')) {
+        $term = get_queried_object();
+        $base_url = get_term_link($term, 'product_cat');
+        if (!is_wp_error($base_url)) {
+            $base_url = trailingslashit($base_url);
+            $args['base']     = esc_url_raw(add_query_arg('page', '%#%', $base_url));
+            $args['format']   = '?page=%#%';
+            $args['add_args'] = array();
+        }
+    }
+    return $args;
+}
+
+/**
+ * Prevent canonical redirects that try to force /page/X on category pages when using ?page=X.
+ */
+add_filter('redirect_canonical', 'mimoskorea_disable_canonical_for_category_page_param', 10, 2);
+function mimoskorea_disable_canonical_for_category_page_param($redirect_url, $requested_url)
+{
+    if (function_exists('is_tax') && is_tax('product_cat') && isset($_GET['page'])) {
+        return false;
+    }
+    return $redirect_url;
+}
+
 // 4. Flush rewrite rules on theme activation.
 add_action('after_switch_theme', 'flush_rewrite_rules');
+
+/**
+ * Traduções ptBR: sobrescrever strings padrão via filtros sem alterar plugins.
+ * - Não modifica arquivos de terceiros.
+ * - Funciona para WooCommerce e outros domínios.
+ */
+add_action('after_setup_theme', function () {
+    load_theme_textdomain('mimoskorea', get_template_directory() . '/languages');
+});
+
+add_action('wp_enqueue_scripts', 'mimoskorea_enqueue_blocks_ptbr_overrides');
+function mimoskorea_enqueue_blocks_ptbr_overrides()
+{
+    if (function_exists('is_cart') && (is_cart() || is_checkout())) {
+        $path = get_template_directory() . '/js/woo-blocks-ptbr.js';
+        $uri  = get_template_directory_uri() . '/js/woo-blocks-ptbr.js';
+        if (file_exists($path)) {
+            wp_enqueue_script('mimoskorea-woo-blocks-ptbr', $uri, array('wp-i18n'), filemtime($path), true);
+        }
+    }
+}
