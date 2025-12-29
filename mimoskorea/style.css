@@ -51,6 +51,10 @@ REGRAS OBRIGATÓRIAS DO PROJETO:
     --color-background: #ffffff;
     --color-border: #F1F0EE;
 
+    /* Container padrão */
+    --container-width: 100%;
+    --container-max-width: 100%;
+
     /* Tipografia - Google Font Inter (ÚNICA fonte permitida no projeto) */
     --font-primary: 'Inter', sans-serif;
     --font-size-base: 1rem;
@@ -217,7 +221,7 @@ a:hover {
 .promo-banner {
     background-color: var(--color-black);
     color: var(--color-white);
-    height: 2.9375rem;
+    height: 3.75rem;
     /* 47px */
     position: relative;
     z-index: 50;
@@ -260,7 +264,7 @@ a:hover {
 
     .promo-content {
         flex-direction: column;
-        padding: 0.5rem 0;
+        padding: 0.5rem 0 !important;
         text-align: center;
     }
 
@@ -3139,4 +3143,18 @@ h6.entry-title {
     font-weight: var(--font-weight-semibold);
     color: var(--color-text);
     margin-bottom: 1.5rem;
+}
+
+.woocommerce .related-products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    width: 100%;
+}
+
+@media (max-width: 767px) {
+    .woocommerce .related-products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
 }
