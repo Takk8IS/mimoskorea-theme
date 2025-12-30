@@ -36,22 +36,21 @@
         }
     }
 
-    /**
-     * Toggle mobile menu function (global)
-     */
-    window.toggleMobileMenu = function () {
+    function toggleMobileMenu() {
         const mobileMenu = document.querySelector('.mobile-menu');
         const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
 
         if (mobileMenu && mobileMenuToggle) {
             mobileMenu.classList.toggle('hidden');
-            mobileMenuToggle.classList.toggle('active');
 
             // Update aria-expanded for accessibility
             const isExpanded = !mobileMenu.classList.contains('hidden');
+            mobileMenuToggle.classList.toggle('active', isExpanded);
             mobileMenuToggle.setAttribute('aria-expanded', isExpanded);
         }
-    };
+    }
+
+    window.toggleMobileMenu = toggleMobileMenu;
 
     /**
      * Scroll to top functionality

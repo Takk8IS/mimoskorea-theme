@@ -22,7 +22,7 @@ $categories = [
         'name' => 'Pelúcias',
         'emoji' => '🧸',
         'color' => '#1DC7D4', // Secondary
-        'url' => '/pelucas/'
+        'url' => '/pelucias/'
     ],
     [
         'name' => 'Lámen',
