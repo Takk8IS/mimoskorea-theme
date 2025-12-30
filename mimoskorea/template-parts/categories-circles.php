@@ -19,22 +19,22 @@ $categories = [
         'url' => '/soju/'
     ],
     [
-        'name' => 'Almofadas',
-        'emoji' => '🛏️',
+        'name' => 'Pelúcias',
+        'emoji' => '🧸',
         'color' => '#1DC7D4', // Secondary
-        'url' => '/almofadas/'
+        'url' => '/pelucas/'
     ],
     [
-        'name' => 'Ramyeon',
+        'name' => 'Lámen',
         'emoji' => '🍜',
         'color' => '#FFC313', // Yellow
-        'url' => '/ramyeon/'
+        'url' => '/lamen/'
     ],
     [
-        'name' => 'Maquiagens',
+        'name' => 'Beleza',
         'emoji' => '💄',
         'color' => '#F44000', // Red
-        'url' => '/maquiagens/'
+        'url' => '/beleza/'
     ],
     [
         'name' => 'Refrigerantes',

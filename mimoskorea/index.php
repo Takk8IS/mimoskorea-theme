@@ -37,13 +37,16 @@ get_header(); ?>
         get_template_part('template-parts/papelaria');
 
         // Banner Black Friday 2025 abaixo da seção Papelaria
-        get_template_part('template-parts/banner-black-friday-2025');
+        // get_template_part('template-parts/banner-black-friday-2025');
+
+        // Banner Lojas abaixo da seção Pelúcias
+        get_template_part('template-parts/banner-lojas');
 
         // Seção Pelúcias abaixo do banner
         get_template_part('template-parts/pelucias');
 
         // Banner Lojas abaixo da seção Pelúcias
-        get_template_part('template-parts/banner-lojas');
+        // get_template_part('template-parts/banner-lojas');
     }
     ?>
 
