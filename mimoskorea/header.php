@@ -43,15 +43,25 @@
             </nav>
 
             <div class="container mx-auto px-4">
-                <div class="flex items-center justify-between py-4">
+                <div class="flex items-center gap-3 py-4">
                     <!-- Menu Mobile Toggle -->
                     <button type="button" class="mobile-menu-toggle lg:hidden p-2 rounded-md hover:bg-gray-100 transition-colors" aria-label="Menu" aria-controls="mobile-menu" aria-expanded="false">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
+
+                    <div class="mobile-header-search lg:hidden">
+                        <?php
+                        get_template_part('template-parts/search-bar', null, [
+                            'id' => 'header-search-mobile',
+                            'class' => 'nav-search nav-search--mobile',
+                            'placeholder' => 'Buscar...'
+                        ]);
+                        ?>
+                    </div>
                 </div>
-                
+
                 <!-- Menu Mobile -->
                 <div id="mobile-menu" class="mobile-menu hidden lg:hidden border-t border-gray-100 py-4">
                     <?php

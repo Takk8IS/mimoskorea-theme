@@ -790,6 +790,100 @@ a.wc-block-components-button.wc-block-components-totals-coupon__button.contained
     gap: 1.5rem;
 }
 
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex: 1;
+    justify-content: flex-end;
+}
+
+.nav-search-desktop {
+    flex: 0 1 clamp(16rem, 35vw, 34rem);
+}
+
+.nav-search-mobile {
+    display: none;
+    padding-bottom: 1rem;
+}
+
+.site-search {
+    width: 100%;
+}
+
+.site-search-inner {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 9999px;
+    background-color: var(--color-tertiary);
+    border: 1px solid transparent;
+    box-shadow: none;
+}
+
+.site-search-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text);
+    font-size: 1.125rem;
+    line-height: 1;
+}
+
+.site-search-input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: var(--font-primary);
+    font-size: var(--font-size-text);
+    color: var(--color-text);
+    -webkit-appearance: none;
+    appearance: none;
+    box-shadow: none;
+}
+
+.site-search .site-search-input:focus,
+.site-search .site-search-input:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.site-search-inner:focus-within {
+    border-color: var(--color-black);
+    box-shadow: none;
+}
+
+.site-search-input::placeholder {
+    color: rgba(0, 0, 0, 0.55);
+}
+
+.site-search-input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+@media (max-width: 1023px) {
+    .nav-container {
+        height: var(--nav-height);
+    }
+
+    .nav-search-desktop {
+        display: none;
+    }
+
+    .nav-search-mobile {
+        display: block;
+    }
+
+    .mobile-header-search {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+}
+
 .nav-icon {
     width: 1rem;
     height: 1rem;
@@ -918,7 +1012,9 @@ a.wc-block-components-button.wc-block-components-totals-coupon__button.contained
     padding: 0.75rem 1rem;
     border-radius: var(--border-radius);
     transition: var(--transition);
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .mobile-menu-list a:hover,

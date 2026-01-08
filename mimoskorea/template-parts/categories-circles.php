@@ -63,7 +63,7 @@ $categories = [
     [
         'name' => 'Biscoitos',
         'emoji' => '🍪',
-        'color' => '#F1F0EE', // Tertiary
+        'color' => '#F44000', // Red
         'url' => '/biscoitos/'
     ],
     [

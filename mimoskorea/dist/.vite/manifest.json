@@ -1,6 +1,6 @@
 {
   "src/main-legacy.js": {
-    "file": "js/main-legacy.zCdGUfuX.js",
+    "file": "js/main-legacy.BZRd461i.js",
     "name": "main",
     "src": "src/main-legacy.js",
     "isEntry": true,
@@ -9,22 +9,22 @@
     ]
   },
   "src/main.js": {
-    "file": "js/main.wUJB3vFx.js",
+    "file": "js/main.rNfhL4D3.js",
     "name": "main",
     "src": "src/main.js",
     "isEntry": true,
     "css": [
-      "css/style.CYXxkIeH.css"
+      "css/style.DfcYAlCG.css"
     ]
   },
   "src/style-legacy.css": {
-    "file": "js/style-legacy.Bq7rQ89p.js",
+    "file": "js/style-legacy.APa4ZrLr.js",
     "name": "style",
     "src": "src/style-legacy.css",
     "isEntry": true
   },
   "src/style.css": {
-    "file": "css/style.CYXxkIeH.css",
+    "file": "css/style.DfcYAlCG.css",
     "src": "src/style.css",
     "isEntry": true,
     "names": [

@@ -46,14 +46,14 @@
 
                 <div class="footer-social" aria-label="Redes sociais">
                     <ul class="footer-social-list flex items-center gap-3" role="list">
-                        <li><a href="#" aria-label="Instagram" class="footer-social-link"><i class="ph ph-instagram-logo"></i></a></li>
-                        <li><a href="#" aria-label="TikTok" class="footer-social-link"><i class="ph ph-tiktok-logo"></i></a></li>
-                        <li><a href="#" aria-label="Pinterest" class="footer-social-link"><i class="ph ph-pinterest-logo"></i></a></li>
-                        <li><a href="#" aria-label="Facebook" class="footer-social-link"><i class="ph ph-facebook-logo"></i></a></li>
-                        <li><a href="#" aria-label="Medium" class="footer-social-link"><i class="ph ph-medium-logo"></i></a></li>
-                        <li><a href="#" aria-label="YouTube" class="footer-social-link"><i class="ph ph-youtube-logo"></i></a></li>
-                        <li><a href="#" aria-label="X (Twitter)" class="footer-social-link"><i class="ph ph-x-logo"></i></a></li>
-                        <li><a href="#" aria-label="LinkedIn" class="footer-social-link"><i class="ph ph-linkedin-logo"></i></a></li>
+                        <li><a href="https://instagram.com/mimoskoreadesign" aria-label="Instagram" class="footer-social-link"><i class="ph ph-instagram-logo"></i></a></li>
+                        <li><a href="https://tiktok.com/@mimoskoreadesign" aria-label="TikTok" class="footer-social-link"><i class="ph ph-tiktok-logo"></i></a></li>
+                        <!-- <li><a href="https://pinterest.com/mimoskoreadesign" aria-label="Pinterest" class="footer-social-link"><i class="ph ph-pinterest-logo"></i></a></li> -->
+                        <li><a href="https://facebook.com/mimoskoreadesign" aria-label="Facebook" class="footer-social-link"><i class="ph ph-facebook-logo"></i></a></li>
+                        <!-- <li><a href="https://x.com/mimoskoreadesign" aria-label="X (Twitter)" class="footer-social-link"><i class="ph ph-x-logo"></i></a></li> -->
+                        <li><a href="https://linkedin.com/company/mimoskorea" aria-label="LinkedIn" class="footer-social-link"><i class="ph ph-linkedin-logo"></i></a></li>
+                        <!-- <li><a href="https://medium.com/@mimoskoreadesign" aria-label="Medium" class="footer-social-link"><i class="ph ph-medium-logo"></i></a></li> -->
+                        <!-- <li><a href="#" aria-label="YouTube" class="footer-social-link"><i class="ph ph-youtube-logo"></i></a></li> -->
                     </ul>
                 </div>
 
@@ -81,7 +81,7 @@
                     <p class="footer-text">Use o QRCode para se conectar com nosso WhatsApp e ganhe 10% de desconto no seu próximo pedido!</p>
                     <div class="whatsapp-qr flex items-center gap-4">
                         <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/whatsapp-qr-placeholder.svg'); ?>" alt="Código QR do WhatsApp" class="qr-image w-40 h-40 border border-black" />
-                        <a href="#" class="whatsapp-link inline-flex items-center gap-2" aria-label="Abrir WhatsApp"><i class="ph ph-whatsapp-logo"></i> WhatsApp</a>
+                        <a href="https://wa.me/5581998769121" class="whatsapp-link inline-flex items-center gap-2" aria-label="Abrir WhatsApp"><i class="ph ph-whatsapp-logo"></i> WhatsApp</a>
                     </div>
                 </section>
             </div>
