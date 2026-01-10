@@ -1630,20 +1630,11 @@ a.wc-block-components-button.wc-block-components-totals-coupon__button.contained
         gap: 1rem;
     }
 
-    .best-sellers-grid .store-item {
-        max-width: none;
-    }
-
     .store-item-photo {
         height: 20rem;
         /* 320px */
         max-width: 16rem;
         /* 256px */
-    }
-
-    .best-sellers-grid .store-item-photo {
-        max-width: none;
-        margin: 0;
     }
 
     .best-sellers-title {
