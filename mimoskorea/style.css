@@ -871,7 +871,7 @@ a.wc-block-components-button.wc-block-components-totals-coupon__button.contained
     }
 
     .nav-search-desktop {
-        display: none;
+        display: none !important;
     }
 
     .nav-search-mobile {

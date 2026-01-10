@@ -29,15 +29,17 @@ $cart_count = $woocommerce_active ? WC()->cart->get_cart_contents_count() : 0;
         </div>
 
         <div class="nav-actions">
-            <div class="nav-search-desktop">
-                <?php
-                get_template_part('template-parts/search-bar', null, [
-                    'id' => 'nav-search',
-                    'class' => 'nav-search',
-                    'placeholder' => 'Buscar...'
-                ]);
-                ?>
-            </div>
+            <?php if (!wp_is_mobile()): ?>
+                <div class="nav-search-desktop">
+                    <?php
+                    get_template_part('template-parts/search-bar', null, [
+                        'id' => 'nav-search',
+                        'class' => 'nav-search',
+                        'placeholder' => 'Buscar...'
+                    ]);
+                    ?>
+                </div>
+            <?php endif; ?>
 
             <!-- Ícone Minha Conta -->
             <?php if (is_user_logged_in()): ?>
