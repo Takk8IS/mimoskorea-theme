@@ -713,7 +713,16 @@ function mimoskorea_force_theme_home_on_front_page($template)
         return $template;
     }
 
-    if (function_exists('is_front_page') && is_front_page()) {
+    $home_path = wp_parse_url(home_url('/'), PHP_URL_PATH) ?: '/';
+    $request_path = wp_parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+    $is_home_path = trailingslashit($request_path) === trailingslashit($home_path);
+
+    $is_home_context = (function_exists('is_front_page') && is_front_page())
+        || (function_exists('is_home') && is_home())
+        || (function_exists('is_shop') && is_shop())
+        || (function_exists('is_post_type_archive') && is_post_type_archive('product'));
+
+    if ($is_home_path && $is_home_context) {
         $forced = locate_template('index.php');
         if (is_string($forced) && $forced !== '') {
             return $forced;
@@ -722,14 +731,23 @@ function mimoskorea_force_theme_home_on_front_page($template)
 
     return $template;
 }
-add_filter('template_include', 'mimoskorea_force_theme_home_on_front_page', 99);
+add_filter('template_include', 'mimoskorea_force_theme_home_on_front_page', 9999);
 
 function mimoskorea_force_front_page_title($title)
 {
-    if (function_exists('is_front_page') && is_front_page()) {
+    $home_path = wp_parse_url(home_url('/'), PHP_URL_PATH) ?: '/';
+    $request_path = wp_parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+    $is_home_path = trailingslashit($request_path) === trailingslashit($home_path);
+
+    $is_home_context = (function_exists('is_front_page') && is_front_page())
+        || (function_exists('is_home') && is_home())
+        || (function_exists('is_shop') && is_shop())
+        || (function_exists('is_post_type_archive') && is_post_type_archive('product'));
+
+    if ($is_home_path && $is_home_context) {
         return (string) get_bloginfo('name');
     }
 
     return $title;
 }
-add_filter('pre_get_document_title', 'mimoskorea_force_front_page_title', 99);
+add_filter('pre_get_document_title', 'mimoskorea_force_front_page_title', 9999);
