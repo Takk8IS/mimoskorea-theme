@@ -1198,7 +1198,7 @@ a.wc-block-components-button.wc-block-components-totals-coupon__button.contained
 
     .hero-carousel-track {
         gap: 0.75rem;
-        padding: 0 0.5rem;
+        padding: 0 var(--content-padding);
     }
 
     .hero-carousel-title {
@@ -1426,7 +1426,7 @@ a.wc-block-components-button.wc-block-components-totals-coupon__button.contained
     }
 
     .categories-circles-track {
-        gap: 1rem;
+        gap: 0.75rem;
         padding: 0.5rem 0;
     }
 
