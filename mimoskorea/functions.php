@@ -706,3 +706,30 @@ function mimoskorea_enqueue_blocks_ptbr_overrides()
         }
     }
 }
+
+function mimoskorea_force_theme_home_on_front_page($template)
+{
+    if (is_admin()) {
+        return $template;
+    }
+
+    if (function_exists('is_front_page') && is_front_page()) {
+        $forced = locate_template('index.php');
+        if (is_string($forced) && $forced !== '') {
+            return $forced;
+        }
+    }
+
+    return $template;
+}
+add_filter('template_include', 'mimoskorea_force_theme_home_on_front_page', 99);
+
+function mimoskorea_force_front_page_title($title)
+{
+    if (function_exists('is_front_page') && is_front_page()) {
+        return (string) get_bloginfo('name');
+    }
+
+    return $title;
+}
+add_filter('pre_get_document_title', 'mimoskorea_force_front_page_title', 99);

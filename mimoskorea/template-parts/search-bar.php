@@ -8,7 +8,10 @@ $placeholder = isset($args['placeholder']) ? (string) $args['placeholder'] : 'Bu
 
 ?>
 
-<form class="site-search <?php echo esc_attr($class); ?>" role="search" aria-label="Buscar" onsubmit="return false;">
+<form class="site-search <?php echo esc_attr($class); ?>" role="search" aria-label="Buscar" method="get" action="<?php echo esc_url(home_url('/')); ?>">
+    <?php if (class_exists('WooCommerce')): ?>
+        <input type="hidden" name="post_type" value="product" />
+    <?php endif; ?>
     <div class="site-search-inner">
         <span class="site-search-icon" aria-hidden="true">
             <i class="ph ph-magnifying-glass"></i>
@@ -18,9 +21,10 @@ $placeholder = isset($args['placeholder']) ? (string) $args['placeholder'] : 'Bu
             class="site-search-input"
             type="search"
             placeholder="<?php echo esc_attr($placeholder); ?>"
+            name="s"
+            value="<?php echo esc_attr(get_search_query()); ?>"
             autocomplete="off"
             inputmode="search"
         />
     </div>
 </form>
-
