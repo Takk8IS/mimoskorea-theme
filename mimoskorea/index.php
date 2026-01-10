@@ -12,7 +12,16 @@ get_header(); ?>
 <main id="main" class="site-main">
     <?php
     // Incluir o carrossel hero na homepage
-    if (is_home() || is_front_page()) {
+    $home_path = wp_parse_url(home_url('/'), PHP_URL_PATH) ?: '/';
+    $request_path = wp_parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+    $is_home_path = trailingslashit($request_path) === trailingslashit($home_path);
+
+    $is_home_context = (function_exists('is_front_page') && is_front_page())
+        || (function_exists('is_home') && is_home())
+        || (function_exists('is_shop') && is_shop())
+        || (function_exists('is_post_type_archive') && is_post_type_archive('product'));
+
+    if ($is_home_path && $is_home_context) {
         get_template_part('banner-carousel');
 
         // Categorias em círculos abaixo do hero-carousel
