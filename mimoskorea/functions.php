@@ -713,6 +713,11 @@ function mimoskorea_force_theme_home_on_front_page($template)
         return $template;
     }
 
+    $has_search_param = isset($_GET['s']) && trim((string) $_GET['s']) !== '';
+    if ((function_exists('is_search') && is_search()) || $has_search_param) {
+        return $template;
+    }
+
     $home_path = wp_parse_url(home_url('/'), PHP_URL_PATH) ?: '/';
     $request_path = wp_parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
     $is_home_path = trailingslashit($request_path) === trailingslashit($home_path);
@@ -735,6 +740,11 @@ add_filter('template_include', 'mimoskorea_force_theme_home_on_front_page', 9999
 
 function mimoskorea_force_front_page_title($title)
 {
+    $has_search_param = isset($_GET['s']) && trim((string) $_GET['s']) !== '';
+    if ((function_exists('is_search') && is_search()) || $has_search_param) {
+        return $title;
+    }
+
     $home_path = wp_parse_url(home_url('/'), PHP_URL_PATH) ?: '/';
     $request_path = wp_parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
     $is_home_path = trailingslashit($request_path) === trailingslashit($home_path);
@@ -751,3 +761,19 @@ function mimoskorea_force_front_page_title($title)
     return $title;
 }
 add_filter('pre_get_document_title', 'mimoskorea_force_front_page_title', 9999);
+
+function mimoskorea_disable_cache_on_search()
+{
+    if (is_admin()) {
+        return;
+    }
+
+    $has_search_param = isset($_GET['s']) && trim((string) $_GET['s']) !== '';
+    if ((function_exists('is_search') && is_search()) || $has_search_param) {
+        if (!defined('DONOTCACHEPAGE')) {
+            define('DONOTCACHEPAGE', true);
+        }
+        nocache_headers();
+    }
+}
+add_action('template_redirect', 'mimoskorea_disable_cache_on_search', 0);
