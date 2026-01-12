@@ -777,3 +777,72 @@ function mimoskorea_disable_cache_on_search()
     }
 }
 add_action('template_redirect', 'mimoskorea_disable_cache_on_search', 0);
+
+function mimoskorea_product_search_posts_where($where, $query)
+{
+    if (is_admin()) {
+        return $where;
+    }
+
+    if (!$query instanceof WP_Query) {
+        return $where;
+    }
+
+    $tokens = $query->get('mimoskorea_product_title_tokens');
+    if (!is_array($tokens) || empty($tokens)) {
+        return $where;
+    }
+
+    $post_type = $query->get('post_type');
+    $is_product_query = ($post_type === 'product')
+        || (is_array($post_type) && in_array('product', $post_type, true));
+
+    if (!$is_product_query) {
+        return $where;
+    }
+
+    global $wpdb;
+
+    $parts = [];
+    foreach ($tokens as $token) {
+        $token = trim((string) $token);
+        if ($token === '') {
+            continue;
+        }
+        $parts[] = $wpdb->prepare("{$wpdb->posts}.post_title LIKE %s", '%' . $wpdb->esc_like($token) . '%');
+    }
+
+    if (!empty($parts)) {
+        $where .= ' AND (' . implode(' AND ', $parts) . ')';
+    }
+
+    return $where;
+}
+add_filter('posts_where', 'mimoskorea_product_search_posts_where', 10, 2);
+
+function mimoskorea_force_product_search_main_query($query)
+{
+    if (is_admin() || !$query->is_main_query()) {
+        return;
+    }
+
+    $raw_s = isset($_GET['s']) ? trim((string) $_GET['s']) : '';
+    if ($raw_s === '') {
+        return;
+    }
+
+    $requested_post_type = isset($_GET['post_type']) ? (string) $_GET['post_type'] : '';
+    if ($requested_post_type !== 'product') {
+        return;
+    }
+
+    $normalized = strtolower(remove_accents($raw_s));
+    $raw_tokens = preg_split('/\s+/', $normalized) ?: [];
+    $tokens = array_values(array_filter(array_unique(array_map('trim', array_merge([$normalized], $raw_tokens))), static fn($t) => $t !== ''));
+
+    $query->set('post_type', 'product');
+    $query->set('post_status', 'publish');
+    $query->set('s', $raw_s);
+    $query->set('mimoskorea_product_title_tokens', $tokens);
+}
+add_action('pre_get_posts', 'mimoskorea_force_product_search_main_query', 1);
