@@ -13,7 +13,7 @@ get_header(); ?>
     <?php
     if (function_exists('is_search') && is_search()) {
         $search_query = trim((string) get_search_query());
-        ?>
+    ?>
         <section class="search-results-section full-width-section">
             <div class="content-container">
                 <h1 class="search-results-title">
@@ -61,15 +61,37 @@ get_header(); ?>
 
                     $limit = 24;
 
-                    $text_query = new WP_Query([
+                    $like_tokens = array_values(array_unique(array_filter(array_merge([$normalized_query], $tokens), static fn($t) => is_string($t) && trim($t) !== '')));
+                    global $wpdb;
+                    $title_where_filter = static function ($where, $query) use ($wpdb, $like_tokens) {
+                        if (!$query instanceof WP_Query || !$query->get('mimoskorea_title_like')) {
+                            return $where;
+                        }
+
+                        $parts = [];
+                        foreach ($like_tokens as $token) {
+                            $parts[] = $wpdb->prepare("{$wpdb->posts}.post_title LIKE %s", '%' . $wpdb->esc_like($token) . '%');
+                        }
+
+                        if (!empty($parts)) {
+                            $where .= ' AND (' . implode(' AND ', $parts) . ')';
+                        }
+
+                        return $where;
+                    };
+
+                    add_filter('posts_where', $title_where_filter, 10, 2);
+                    $title_query = new WP_Query([
                         'post_type' => 'product',
                         'post_status' => 'publish',
-                        's' => $search_query,
                         'posts_per_page' => $limit,
                         'fields' => 'ids',
                         'no_found_rows' => true,
+                        'mimoskorea_title_like' => true,
                     ]);
-                    $text_ids = array_map('intval', $text_query->posts ?: []);
+                    remove_filter('posts_where', $title_where_filter, 10);
+
+                    $text_ids = array_map('intval', $title_query->posts ?: []);
 
                     $tax_ids = [];
                     $tax_query_parts = [];
@@ -148,37 +170,43 @@ get_header(); ?>
                                 }
                             }
 
-                            $scores[$product_id] = $score;
+                            if ($score > 0) {
+                                $scores[$product_id] = $score;
+                            }
                         }
 
-                        arsort($scores);
-                        $sorted_ids = array_slice(array_keys($scores), 0, $limit);
-
-                        $final = new WP_Query([
-                            'post_type' => 'product',
-                            'post_status' => 'publish',
-                            'posts_per_page' => $limit,
-                            'post__in' => $sorted_ids,
-                            'orderby' => 'post__in',
-                        ]);
-
-                        if ($final->have_posts()) {
-                            echo '<div class="search-results-grid">';
-                            while ($final->have_posts()) {
-                                $final->the_post();
-                                wc_get_template_part('content', 'product');
-                            }
-                            echo '</div>';
-                            wp_reset_postdata();
-                        } else {
+                        if (empty($scores)) {
                             echo '<p class="search-results-empty">Nenhum produto encontrado.</p>';
+                        } else {
+                            arsort($scores);
+                            $sorted_ids = array_slice(array_keys($scores), 0, $limit);
+
+                            $final = new WP_Query([
+                                'post_type' => 'product',
+                                'post_status' => 'publish',
+                                'posts_per_page' => $limit,
+                                'post__in' => $sorted_ids,
+                                'orderby' => 'post__in',
+                            ]);
+
+                            if ($final->have_posts()) {
+                                echo '<div class="search-results-grid">';
+                                while ($final->have_posts()) {
+                                    $final->the_post();
+                                    wc_get_template_part('content', 'product');
+                                }
+                                echo '</div>';
+                                wp_reset_postdata();
+                            } else {
+                                echo '<p class="search-results-empty">Nenhum produto encontrado.</p>';
+                            }
                         }
                     }
                 }
                 ?>
             </div>
         </section>
-        <?php
+    <?php
     }
 
     // Incluir o carrossel hero na homepage
