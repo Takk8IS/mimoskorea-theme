@@ -1065,6 +1065,41 @@ a.wc-block-components-button.wc-block-components-totals-coupon__button.contained
     padding: 0 var(--content-padding);
 }
 
+.search-results-section {
+    padding: 2rem 0;
+}
+
+.search-results-title {
+    font-size: var(--font-size-heading);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    margin: 0 0 1.5rem 0;
+}
+
+.search-results-empty {
+    font-size: var(--font-size-text);
+    color: var(--color-text);
+    margin: 0;
+}
+
+.search-results-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 768px) {
+    .search-results-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    .search-results-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+}
+
 .hidden {
     display: none;
 }
