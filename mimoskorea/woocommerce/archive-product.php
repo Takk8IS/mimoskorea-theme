@@ -50,7 +50,7 @@ if (woocommerce_product_loop()) {
 	do_action('woocommerce_before_shop_loop');
 
 	// Custom grid container for products - same as home
-	echo '<div class="best-sellers-grid">';
+	echo '<div class="shop-products-grid">';
 
 	if ( wc_get_loop_prop( 'is_shortcode' ) ) {
 		$columns = absint( wc_get_loop_prop( 'columns' ) );

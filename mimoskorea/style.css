@@ -2657,13 +2657,15 @@ a.wc-block-components-button.wc-block-components-totals-coupon__button.contained
 }
 
 /* Grid de produtos - IGUAL À HOME, SEM PADDING LATERAL */
-.best-sellers-grid {
+.shop-products-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(2, auto);
     gap: 1rem 4rem;
     width: 100%;
     max-width: none;
+    padding: 0 var(--content-padding);
+    margin: 0 auto;
 }
 
 /* Links dos produtos */
@@ -2719,14 +2721,14 @@ a.wc-block-components-button.wc-block-components-totals-coupon__button.contained
 
 /* Responsividade para WooCommerce */
 @media (min-width: 768px) and (max-width: 1023px) {
-    .woocommerce .best-sellers-grid {
+    .woocommerce .shop-products-grid {
         grid-template-columns: repeat(3, 1fr);
         gap: 1.5rem;
     }
 }
 
 @media (max-width: 767px) {
-    .best-sellers-grid {
+    .shop-products-grid {
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(5, auto);
         gap: 1rem;
