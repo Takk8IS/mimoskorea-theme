@@ -58,9 +58,9 @@
                 </div>
 
                 <div class="footer-payments flex flex-wrap items-center gap-2" aria-label="Opções de pagamento">
-                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/payment-pix.svg'); ?>" alt="PIX" class="payment-icon h-8" />
-                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/payment-visa.svg'); ?>" alt="Visa" class="payment-icon h-8" />
-                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/payment-mastercard.svg'); ?>" alt="Mastercard" class="payment-icon h-8" />
+                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/payments/payment-pix.svg'); ?>" alt="PIX" class="payment-icon h-8" />
+                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/payments/payment-visa.svg'); ?>" alt="Visa" class="payment-icon h-8" />
+                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/payments/payment-mastercard.svg'); ?>" alt="Mastercard" class="payment-icon h-8" />
                 </div>
             </div>
 

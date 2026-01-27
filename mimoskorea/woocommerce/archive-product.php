@@ -49,8 +49,22 @@ if (woocommerce_product_loop()) {
 	 */
 	do_action('woocommerce_before_shop_loop');
 
-	// Custom grid container for products - same as home
-	echo '<div class="shop-products-grid">';
+	$list_name = '';
+	if (function_exists('is_search') && is_search()) {
+		$list_name = 'Busca';
+	} elseif (function_exists('is_product_category') && is_product_category()) {
+		$term = get_queried_object();
+		$list_name = is_object($term) && isset($term->name) ? (string) $term->name : 'Categoria';
+	} elseif (function_exists('is_product_tag') && is_product_tag()) {
+		$term = get_queried_object();
+		$list_name = is_object($term) && isset($term->name) ? (string) $term->name : 'Tag';
+	} elseif (function_exists('is_shop') && is_shop()) {
+		$list_name = 'Loja';
+	} else {
+		$list_name = 'Produtos';
+	}
+
+	echo '<div class="shop-products-grid" data-list-name="' . esc_attr($list_name) . '">';
 
 	if ( wc_get_loop_prop( 'is_shortcode' ) ) {
 		$columns = absint( wc_get_loop_prop( 'columns' ) );

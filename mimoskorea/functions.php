@@ -846,3 +846,232 @@ function mimoskorea_force_product_search_main_query($query)
     $query->set('mimoskorea_product_title_tokens', $tokens);
 }
 add_action('pre_get_posts', 'mimoskorea_force_product_search_main_query', 1);
+
+function mimoskorea_tracking_settings()
+{
+    $settings = array(
+        'ga4_measurement_id' => '',
+        'gtm_id' => '',
+        'meta_pixel_id' => '1434179828708252',
+        'tiktok_pixel_id' => '',
+    );
+
+    return apply_filters('mimoskorea_tracking_settings', $settings);
+}
+
+function mimoskorea_tracking_get_page_type()
+{
+    if (function_exists('is_order_received_page') && is_order_received_page()) {
+        return 'order_received';
+    }
+    if (function_exists('is_checkout') && is_checkout()) {
+        return 'checkout';
+    }
+    if (function_exists('is_cart') && is_cart()) {
+        return 'cart';
+    }
+    if (function_exists('is_product') && is_product()) {
+        return 'product';
+    }
+    if (function_exists('is_shop') && is_shop()) {
+        return 'shop';
+    }
+    if (function_exists('is_product_category') && is_product_category()) {
+        return 'product_category';
+    }
+    if (function_exists('is_product_tag') && is_product_tag()) {
+        return 'product_tag';
+    }
+    if (function_exists('is_search') && is_search()) {
+        return 'search';
+    }
+    if (function_exists('is_front_page') && is_front_page()) {
+        return 'home';
+    }
+    if (is_page()) {
+        return 'page';
+    }
+    if (is_single()) {
+        return 'post';
+    }
+    if (is_archive()) {
+        return 'archive';
+    }
+    return 'other';
+}
+
+function mimoskorea_tracking_get_product_item($product, $quantity = 1)
+{
+    if (!is_a($product, WC_Product::class)) {
+        return null;
+    }
+
+    $product_id = $product->get_id();
+    $categories = wp_get_post_terms($product_id, 'product_cat', array('fields' => 'names'));
+    $category_primary = isset($categories[0]) ? (string) $categories[0] : '';
+    $category_secondary = isset($categories[1]) ? (string) $categories[1] : '';
+
+    $item = array(
+        'item_id' => (string) $product_id,
+        'item_name' => (string) $product->get_name(),
+        'item_sku' => (string) $product->get_sku(),
+        'price' => (float) wc_get_price_to_display($product),
+        'quantity' => (int) $quantity,
+        'item_category' => $category_primary,
+    );
+
+    if ($category_secondary !== '') {
+        $item['item_category2'] = $category_secondary;
+    }
+
+    return $item;
+}
+
+function mimoskorea_tracking_get_cart_data()
+{
+    if (!function_exists('WC') || !WC()->cart) {
+        return null;
+    }
+
+    $items = array();
+    $value = 0.0;
+    foreach (WC()->cart->get_cart() as $cart_item) {
+        $product = isset($cart_item['data']) ? $cart_item['data'] : null;
+        $quantity = isset($cart_item['quantity']) ? (int) $cart_item['quantity'] : 1;
+        $item = mimoskorea_tracking_get_product_item($product, $quantity);
+        if (!$item) {
+            continue;
+        }
+        $items[] = $item;
+        $value += $item['price'] * $quantity;
+    }
+
+    return array(
+        'items' => $items,
+        'value' => $value,
+    );
+}
+
+function mimoskorea_tracking_get_order_data()
+{
+    if (!function_exists('is_order_received_page') || !is_order_received_page()) {
+        return null;
+    }
+
+    $order_id = absint(get_query_var('order-received'));
+    if ($order_id <= 0 && isset($_GET['key'])) {
+        $order_id = (int) wc_get_order_id_by_order_key(wc_clean(wp_unslash($_GET['key'])));
+    }
+
+    if ($order_id <= 0) {
+        return null;
+    }
+
+    $order = wc_get_order($order_id);
+    if (!$order) {
+        return null;
+    }
+
+    $items = array();
+    foreach ($order->get_items() as $item_id => $item) {
+        $product_id = (int) wc_get_order_item_meta($item_id, '_product_id', true);
+        $product = $product_id ? wc_get_product($product_id) : null;
+        $quantity = (int) wc_get_order_item_meta($item_id, '_qty', true);
+        $product_item = mimoskorea_tracking_get_product_item($product, $quantity);
+        if ($product_item) {
+            $items[] = $product_item;
+        }
+    }
+
+    $coupon = '';
+    $coupons = $order->get_coupon_codes();
+    if (!empty($coupons)) {
+        $coupon = (string) $coupons[0];
+    }
+
+    return array(
+        'id' => (string) $order->get_id(),
+        'value' => (float) $order->get_total(),
+        'items' => $items,
+        'coupon' => $coupon,
+    );
+}
+
+function mimoskorea_tracking_build_data()
+{
+    $data = array(
+        'page_type' => mimoskorea_tracking_get_page_type(),
+        'page_title' => (string) wp_get_document_title(),
+        'page_url' => (string) home_url(add_query_arg(array(), $GLOBALS['wp']->request)),
+        'currency' => function_exists('get_woocommerce_currency') ? get_woocommerce_currency() : '',
+    );
+
+    if (function_exists('is_search') && is_search()) {
+        $data['search_query'] = get_search_query();
+    }
+
+    if (function_exists('is_product') && is_product()) {
+        $product = wc_get_product(get_the_ID());
+        $data['product'] = mimoskorea_tracking_get_product_item($product, 1);
+    }
+
+    if (function_exists('is_cart') && is_cart()) {
+        $data['cart'] = mimoskorea_tracking_get_cart_data();
+    }
+
+    if (function_exists('is_checkout') && is_checkout()) {
+        $data['checkout'] = mimoskorea_tracking_get_cart_data();
+    }
+
+    $order_data = mimoskorea_tracking_get_order_data();
+    if ($order_data) {
+        $data['order'] = $order_data;
+    }
+
+    return $data;
+}
+
+function mimoskorea_tracking_head()
+{
+    if (is_admin()) {
+        return;
+    }
+
+    $settings = mimoskorea_tracking_settings();
+    $data = mimoskorea_tracking_build_data();
+
+    $ga4_id = isset($settings['ga4_measurement_id']) ? trim((string) $settings['ga4_measurement_id']) : '';
+    $gtm_id = isset($settings['gtm_id']) ? trim((string) $settings['gtm_id']) : '';
+    $meta_id = isset($settings['meta_pixel_id']) ? trim((string) $settings['meta_pixel_id']) : '';
+    $tiktok_id = isset($settings['tiktok_pixel_id']) ? trim((string) $settings['tiktok_pixel_id']) : '';
+
+    echo '<script>window.dataLayer=window.dataLayer||[];window.MimosTrackingSettings=' . wp_json_encode($settings) . ';window.MimosTrackingData=' . wp_json_encode($data) . ';</script>';
+
+    if ($ga4_id !== '') {
+        echo '<script async src="https://www.googletagmanager.com/gtag/js?id=' . esc_attr($ga4_id) . '"></script>';
+        echo '<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","' . esc_js($ga4_id) . '");</script>';
+    }
+
+    if ($gtm_id !== '') {
+        echo '<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!=="dataLayer"?"&l="+l:"";j.async=true;j.src="https://www.googletagmanager.com/gtm.js?id="+i+dl;f.parentNode.insertBefore(j,f);})(window,document,"script","dataLayer","' . esc_js($gtm_id) . '");</script>';
+    }
+
+    if ($meta_id !== '') {
+        echo '<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=true;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=true;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");fbq("init","' . esc_js($meta_id) . '");</script>';
+    }
+
+    if ($tiktok_id !== '') {
+        echo '<script>!function(w,d,t){w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"];ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){var e=ttq._i[t]||[];for(var n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e};ttq.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{};ttq._i[e]=[];ttq._i[e]._u=i;ttq._t=ttq._t||{};ttq._t[e]=+new Date;ttq._o=ttq._o||{};ttq._o[e]=n||{};var o=d.createElement("script");o.type="text/javascript";o.async=true;o.src=i+"?sdkid="+e+"&lib="+t;var a=d.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};ttq.load("' . esc_js($tiktok_id) . '");}(window,document,"ttq");</script>';
+    }
+}
+add_action('wp_head', 'mimoskorea_tracking_head', 20);
+
+function mimoskorea_tracking_footer()
+{
+    if (is_admin()) {
+        return;
+    }
+
+    echo '<script>(function(){var settings=window.MimosTrackingSettings||{};var data=window.MimosTrackingData||{};var dataLayer=window.dataLayer=window.dataLayer||[];var sentScroll50=false;var sentScroll90=false;function mapEvent(name){var metaMap={page_view:"PageView",view_item:"ViewContent",view_item_list:"ViewContent",add_to_cart:"AddToCart",begin_checkout:"InitiateCheckout",purchase:"Purchase",view_cart:"ViewContent",view_search_results:"Search"};var tiktokMap={page_view:"PageView",view_item:"ViewContent",view_item_list:"ViewContent",add_to_cart:"AddToCart",begin_checkout:"InitiateCheckout",purchase:"CompletePayment",view_cart:"ViewContent",view_search_results:"Search"};return {meta:metaMap[name]||null,tiktok:tiktokMap[name]||null};}function sendEvent(name,params){var payload=params||{};payload.event=name;dataLayer.push(payload);if(window.gtag){window.gtag("event",name,params||{});}if(window.fbq){var metaEvent=mapEvent(name).meta;if(metaEvent){window.fbq("track",metaEvent,params||{});}}if(window.ttq){var tiktokEvent=mapEvent(name).tiktok;if(tiktokEvent){window.ttq.track(tiktokEvent,params||{});}}}function buildItemFromNode(node){if(!node){return null;}var id=node.getAttribute("data-product-id")||"";var name=node.getAttribute("data-product-name")||"";var price=parseFloat(node.getAttribute("data-product-price")||"0");var sku=node.getAttribute("data-product-sku")||"";var categories=node.getAttribute("data-product-categories")||"";var item={item_id:id,item_name:name,item_sku:sku,price:price,quantity:1};if(categories){var parts=categories.split("|");if(parts[0]){item.item_category=parts[0];}if(parts[1]){item.item_category2=parts[1];}}return item;}function pushPage(){sendEvent("page_view",{page_type:data.page_type||"",page_title:data.page_title||"",page_url:data.page_url||""});if(data.page_type==="product"&&data.product){sendEvent("view_item",{items:[data.product],value:data.product.price||0,currency:data.currency||""});}if(data.page_type==="cart"&&data.cart){sendEvent("view_cart",{items:data.cart.items||[],value:data.cart.value||0,currency:data.currency||""});}if(data.page_type==="checkout"&&data.checkout){sendEvent("begin_checkout",{items:data.checkout.items||[],value:data.checkout.value||0,currency:data.currency||""});}if(data.page_type==="order_received"&&data.order){sendEvent("purchase",{transaction_id:data.order.id||"",items:data.order.items||[],value:data.order.value||0,currency:data.currency||"",coupon:data.order.coupon||""});}if(data.page_type==="search"&&data.search_query){sendEvent("view_search_results",{search_term:data.search_query});}}function pushListView(){var listContainer=document.querySelector("[data-list-name]");if(!listContainer){return;}var listName=listContainer.getAttribute("data-list-name")||"";var items=[];var nodes=listContainer.querySelectorAll("[data-product-id]");var seen={};nodes.forEach(function(node){var item=buildItemFromNode(node);if(!item||!item.item_id||seen[item.item_id]){return;}seen[item.item_id]=true;items.push(item);});if(items.length){sendEvent("view_item_list",{item_list_name:listName,items:items,currency:data.currency||""});}}function bindClickTracking(){document.body.addEventListener("click",function(e){var addButton=e.target.closest(".single_add_to_cart_button,.add_to_cart_button");if(addButton){var productNode=addButton.closest("[data-product-id]");var item=productNode?buildItemFromNode(productNode):null;if(!item&&data.product){item=data.product;}if(item){sendEvent("add_to_cart",{items:[item],value:item.price||0,currency:data.currency||""});}}var productLink=e.target.closest("[data-product-id] a, a[data-product-id]");if(productLink){var productNode=productLink.closest("[data-product-id]");var item=productNode?buildItemFromNode(productNode):null;if(item){sendEvent("select_item",{items:[item]});}}});}function bindScroll(){window.addEventListener("scroll",function(){var doc=document.documentElement;var scrollTop=window.pageYOffset||doc.scrollTop;var height=Math.max(doc.scrollHeight,doc.offsetHeight,doc.clientHeight);var view=window.innerHeight||doc.clientHeight;var total=height-view;if(total<=0){return;}var percent=(scrollTop/total)*100;if(!sentScroll50&&percent>=50){sentScroll50=true;sendEvent("scroll_50",{percent:50});}if(!sentScroll90&&percent>=90){sentScroll90=true;sendEvent("scroll_90",{percent:90});}});}pushPage();pushListView();bindClickTracking();bindScroll();})();</script>';
+}
+add_action('wp_footer', 'mimoskorea_tracking_footer', 20);

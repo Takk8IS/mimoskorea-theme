@@ -30,6 +30,11 @@ $product_name = $product->get_name();
 $product_price = $product->get_price_html();
 $product_link = get_permalink($product_id);
 $product_short_description = $product->get_short_description();
+$product_price_value = (float) wc_get_price_to_display($product);
+$product_currency = function_exists('get_woocommerce_currency') ? get_woocommerce_currency() : '';
+$product_categories = wp_get_post_terms($product_id, 'product_cat', array('fields' => 'names'));
+$product_categories_value = !empty($product_categories) ? implode('|', array_map('sanitize_text_field', $product_categories)) : '';
+$product_sku = $product->get_sku();
 
 // Limit description to 100 characters
 if (strlen($product_short_description) > 100) {
@@ -48,7 +53,7 @@ if ($image_id) {
 }
 ?>
 
-<article class="store-item">
+<article class="store-item" data-product-id="<?php echo esc_attr($product_id); ?>" data-product-sku="<?php echo esc_attr($product_sku); ?>" data-product-name="<?php echo esc_attr($product_name); ?>" data-product-price="<?php echo esc_attr($product_price_value); ?>" data-product-currency="<?php echo esc_attr($product_currency); ?>" data-product-categories="<?php echo esc_attr($product_categories_value); ?>">
     <a href="<?php echo esc_url($product_link); ?>" class="store-item-link">
         <div class="store-item-photo">
             <img src="<?php echo esc_url($image_url); ?>" 

@@ -35,7 +35,7 @@ if (empty($best_selling_ids)) {
         <h2 class="best-sellers-title">Mais Vendidos</h2>
 
         <!-- Grid de produtos - 2 linhas × 5 colunas -->
-        <div class="best-sellers-grid">
+        <div class="best-sellers-grid" data-list-name="Mais Vendidos">
             <?php foreach ($best_selling_ids as $product_id) :
                 $product = wc_get_product($product_id);
                 if (!$product || !$product->is_visible()) {
@@ -60,9 +60,14 @@ if (empty($best_selling_ids)) {
                 if (strlen($product_description) > 120) {
                     $product_description = substr($product_description, 0, 120) . '...';
                 }
+                $product_price_value = (float) wc_get_price_to_display($product);
+                $product_currency = function_exists('get_woocommerce_currency') ? get_woocommerce_currency() : '';
+                $product_categories = wp_get_post_terms($product_id, 'product_cat', array('fields' => 'names'));
+                $product_categories_value = !empty($product_categories) ? implode('|', array_map('sanitize_text_field', $product_categories)) : '';
+                $product_sku = $product->get_sku();
             ?>
 
-                <article class="store-item" onclick="window.location.href='<?php echo esc_url($product_link); ?>'">
+                <article class="store-item" data-product-id="<?php echo esc_attr($product_id); ?>" data-product-sku="<?php echo esc_attr($product_sku); ?>" data-product-name="<?php echo esc_attr($product_name); ?>" data-product-price="<?php echo esc_attr($product_price_value); ?>" data-product-currency="<?php echo esc_attr($product_currency); ?>" data-product-categories="<?php echo esc_attr($product_categories_value); ?>" onclick="window.location.href='<?php echo esc_url($product_link); ?>'">
                     <!-- Foto do produto com mask para zoom -->
                     <div class="store-item-photo">
                         <img
