@@ -67,6 +67,10 @@ function mimoskorea_scripts()
 
     // Scripts do tema
     wp_enqueue_script('mimoskorea-script', get_template_directory_uri() . '/js/main.js', array(), '1.0.0', array('strategy' => 'defer'));
+
+    if (function_exists('is_woocommerce') && (is_woocommerce() || (function_exists('is_cart') && is_cart()) || (function_exists('is_checkout') && is_checkout()))) {
+        wp_enqueue_script('jquery');
+    }
 }
 add_action('wp_enqueue_scripts', 'mimoskorea_scripts');
 
@@ -850,13 +854,22 @@ add_action('pre_get_posts', 'mimoskorea_force_product_search_main_query', 1);
 function mimoskorea_tracking_settings()
 {
     $settings = array(
-        'ga4_measurement_id' => '',
+        'ga4_measurement_id' => 'G-KN2PPW71GL',
         'gtm_id' => '',
         'meta_pixel_id' => '1434179828708252',
         'tiktok_pixel_id' => '',
     );
 
     return apply_filters('mimoskorea_tracking_settings', $settings);
+}
+
+function mimoskorea_tracking_has_consent()
+{
+    $cookie = isset($_COOKIE['tracking_consent']) ? strtolower(trim((string) $_COOKIE['tracking_consent'])) : '';
+    $allowed = array('1', 'true', 'yes', 'on');
+    $consent = in_array($cookie, $allowed, true);
+
+    return (bool) apply_filters('mimoskorea_tracking_has_consent', $consent);
 }
 
 function mimoskorea_tracking_get_page_type()
@@ -992,6 +1005,9 @@ function mimoskorea_tracking_get_order_data()
     return array(
         'id' => (string) $order->get_id(),
         'value' => (float) $order->get_total(),
+        'tax' => (float) $order->get_total_tax(),
+        'shipping' => (float) $order->get_shipping_total(),
+        'currency' => (string) $order->get_currency(),
         'items' => $items,
         'coupon' => $coupon,
     );
@@ -1039,28 +1055,29 @@ function mimoskorea_tracking_head()
 
     $settings = mimoskorea_tracking_settings();
     $data = mimoskorea_tracking_build_data();
+    $consent = mimoskorea_tracking_has_consent();
 
     $ga4_id = isset($settings['ga4_measurement_id']) ? trim((string) $settings['ga4_measurement_id']) : '';
     $gtm_id = isset($settings['gtm_id']) ? trim((string) $settings['gtm_id']) : '';
     $meta_id = isset($settings['meta_pixel_id']) ? trim((string) $settings['meta_pixel_id']) : '';
     $tiktok_id = isset($settings['tiktok_pixel_id']) ? trim((string) $settings['tiktok_pixel_id']) : '';
 
-    echo '<script>window.dataLayer=window.dataLayer||[];window.MimosTrackingSettings=' . wp_json_encode($settings) . ';window.MimosTrackingData=' . wp_json_encode($data) . ';</script>';
+    echo '<script>window.dataLayer=window.dataLayer||[];window.MimosTrackingSettings=' . wp_json_encode($settings) . ';window.MimosTrackingData=' . wp_json_encode($data) . ';window.MimosTrackingConsent=' . wp_json_encode($consent) . ';</script>';
 
-    if ($ga4_id !== '') {
+    if ($ga4_id !== '' && $consent) {
         echo '<script async src="https://www.googletagmanager.com/gtag/js?id=' . esc_attr($ga4_id) . '"></script>';
         echo '<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","' . esc_js($ga4_id) . '");</script>';
     }
 
-    if ($gtm_id !== '') {
+    if ($gtm_id !== '' && $consent) {
         echo '<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!=="dataLayer"?"&l="+l:"";j.async=true;j.src="https://www.googletagmanager.com/gtm.js?id="+i+dl;f.parentNode.insertBefore(j,f);})(window,document,"script","dataLayer","' . esc_js($gtm_id) . '");</script>';
     }
 
-    if ($meta_id !== '') {
+    if ($meta_id !== '' && $consent) {
         echo '<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=true;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=true;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");fbq("init","' . esc_js($meta_id) . '");</script>';
     }
 
-    if ($tiktok_id !== '') {
+    if ($tiktok_id !== '' && $consent) {
         echo '<script>!function(w,d,t){w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"];ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){var e=ttq._i[t]||[];for(var n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e};ttq.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{};ttq._i[e]=[];ttq._i[e]._u=i;ttq._t=ttq._t||{};ttq._t[e]=+new Date;ttq._o=ttq._o||{};ttq._o[e]=n||{};var o=d.createElement("script");o.type="text/javascript";o.async=true;o.src=i+"?sdkid="+e+"&lib="+t;var a=d.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};ttq.load("' . esc_js($tiktok_id) . '");}(window,document,"ttq");</script>';
     }
 }
@@ -1074,4 +1091,17 @@ function mimoskorea_tracking_footer()
 
     echo '<script>(function(){var settings=window.MimosTrackingSettings||{};var data=window.MimosTrackingData||{};var dataLayer=window.dataLayer=window.dataLayer||[];var sentScroll50=false;var sentScroll90=false;function mapEvent(name){var metaMap={page_view:"PageView",view_item:"ViewContent",view_item_list:"ViewContent",add_to_cart:"AddToCart",begin_checkout:"InitiateCheckout",purchase:"Purchase",view_cart:"ViewContent",view_search_results:"Search"};var tiktokMap={page_view:"PageView",view_item:"ViewContent",view_item_list:"ViewContent",add_to_cart:"AddToCart",begin_checkout:"InitiateCheckout",purchase:"CompletePayment",view_cart:"ViewContent",view_search_results:"Search"};return {meta:metaMap[name]||null,tiktok:tiktokMap[name]||null};}function sendEvent(name,params){var payload=params||{};payload.event=name;dataLayer.push(payload);if(window.gtag){window.gtag("event",name,params||{});}if(window.fbq){var metaEvent=mapEvent(name).meta;if(metaEvent){window.fbq("track",metaEvent,params||{});}}if(window.ttq){var tiktokEvent=mapEvent(name).tiktok;if(tiktokEvent){window.ttq.track(tiktokEvent,params||{});}}}function buildItemFromNode(node){if(!node){return null;}var id=node.getAttribute("data-product-id")||"";var name=node.getAttribute("data-product-name")||"";var price=parseFloat(node.getAttribute("data-product-price")||"0");var sku=node.getAttribute("data-product-sku")||"";var categories=node.getAttribute("data-product-categories")||"";var item={item_id:id,item_name:name,item_sku:sku,price:price,quantity:1};if(categories){var parts=categories.split("|");if(parts[0]){item.item_category=parts[0];}if(parts[1]){item.item_category2=parts[1];}}return item;}function pushPage(){sendEvent("page_view",{page_type:data.page_type||"",page_title:data.page_title||"",page_url:data.page_url||""});if(data.page_type==="product"&&data.product){sendEvent("view_item",{items:[data.product],value:data.product.price||0,currency:data.currency||""});}if(data.page_type==="cart"&&data.cart){sendEvent("view_cart",{items:data.cart.items||[],value:data.cart.value||0,currency:data.currency||""});}if(data.page_type==="checkout"&&data.checkout){sendEvent("begin_checkout",{items:data.checkout.items||[],value:data.checkout.value||0,currency:data.currency||""});}if(data.page_type==="order_received"&&data.order){sendEvent("purchase",{transaction_id:data.order.id||"",items:data.order.items||[],value:data.order.value||0,currency:data.currency||"",coupon:data.order.coupon||""});}if(data.page_type==="search"&&data.search_query){sendEvent("view_search_results",{search_term:data.search_query});}}function pushListView(){var listContainer=document.querySelector("[data-list-name]");if(!listContainer){return;}var listName=listContainer.getAttribute("data-list-name")||"";var items=[];var nodes=listContainer.querySelectorAll("[data-product-id]");var seen={};nodes.forEach(function(node){var item=buildItemFromNode(node);if(!item||!item.item_id||seen[item.item_id]){return;}seen[item.item_id]=true;items.push(item);});if(items.length){sendEvent("view_item_list",{item_list_name:listName,items:items,currency:data.currency||""});}}function bindClickTracking(){document.body.addEventListener("click",function(e){var addButton=e.target.closest(".single_add_to_cart_button,.add_to_cart_button");if(addButton){var productNode=addButton.closest("[data-product-id]");var item=productNode?buildItemFromNode(productNode):null;if(!item&&data.product){item=data.product;}if(item){sendEvent("add_to_cart",{items:[item],value:item.price||0,currency:data.currency||""});}}var productLink=e.target.closest("[data-product-id] a, a[data-product-id]");if(productLink){var productNode=productLink.closest("[data-product-id]");var item=productNode?buildItemFromNode(productNode):null;if(item){sendEvent("select_item",{items:[item]});}}});}function bindScroll(){window.addEventListener("scroll",function(){var doc=document.documentElement;var scrollTop=window.pageYOffset||doc.scrollTop;var height=Math.max(doc.scrollHeight,doc.offsetHeight,doc.clientHeight);var view=window.innerHeight||doc.clientHeight;var total=height-view;if(total<=0){return;}var percent=(scrollTop/total)*100;if(!sentScroll50&&percent>=50){sentScroll50=true;sendEvent("scroll_50",{percent:50});}if(!sentScroll90&&percent>=90){sentScroll90=true;sendEvent("scroll_90",{percent:90});}});}pushPage();pushListView();bindClickTracking();bindScroll();})();</script>';
 }
-add_action('wp_footer', 'mimoskorea_tracking_footer', 20);
+
+function mimoskorea_tracking_footer_v2()
+{
+    if (is_admin()) {
+        return;
+    }
+
+    $script = <<<'JS'
+<script>(function(){var settings=window.MimosTrackingSettings||{};var data=window.MimosTrackingData||{};var dataLayer=window.dataLayer=window.dataLayer||[];var consent=!!window.MimosTrackingConsent;var sentScroll50=false;var sentScroll90=false;function mapEvent(name){var metaMap={page_view:"PageView",view_item:"ViewContent",view_item_list:"ViewContent",add_to_cart:"AddToCart",begin_checkout:"InitiateCheckout",purchase:"Purchase",view_cart:"ViewContent",view_search_results:"Search"};var tiktokMap={page_view:"PageView",view_item:"ViewContent",view_item_list:"ViewContent",add_to_cart:"AddToCart",begin_checkout:"InitiateCheckout",purchase:"CompletePayment",view_cart:"ViewContent",view_search_results:"Search"};return {meta:metaMap[name]||null,tiktok:tiktokMap[name]||null};}function getNumber(value){var parsed=parseFloat(String(value||"").replace(",", "."));if(isNaN(parsed)){return 0;}return parsed;}function getQuantity(value){var qty=parseInt(value,10);if(!qty||qty<1){return 1;}return qty;}function sendEvent(name,params){var payload=params||{};payload.event=name;payload.consent=consent;dataLayer.push(payload);if(!consent){return;}if(window.gtag){window.gtag("event",name,params||{});}if(window.fbq){var metaEvent=mapEvent(name).meta;if(metaEvent){window.fbq("track",metaEvent,params||{});}}if(window.ttq){var tiktokEvent=mapEvent(name).tiktok;if(tiktokEvent){window.ttq.track(tiktokEvent,params||{});}}}function buildItemFromNode(node){if(!node){return null;}var id=node.getAttribute("data-product-id")||node.getAttribute("data-product_id")||node.getAttribute("data-productid")||node.getAttribute("data-product")||"";var name=node.getAttribute("data-product-name")||node.getAttribute("data-product_name")||"";var price=getNumber(node.getAttribute("data-product-price")||node.getAttribute("data-product_price")||"0");var sku=node.getAttribute("data-product-sku")||node.getAttribute("data-product_sku")||"";var categories=node.getAttribute("data-product-categories")||node.getAttribute("data-product_categories")||"";var quantity=getQuantity(node.getAttribute("data-quantity")||node.getAttribute("data-qty")||"1");var item={item_id:id,item_name:name,item_sku:sku,price:price,quantity:quantity};if(categories){var parts=categories.split("|");if(parts[0]){item.item_category=parts[0];}if(parts[1]){item.item_category2=parts[1];}}return item;}function buildItemFromButton(button){if(!button){return null;}var item=buildItemFromNode(button);if(item&&item.item_id){return item;}if(button.closest){var container=button.closest("[data-product-id],[data-product_id]");if(container){return buildItemFromNode(container);}}return item;}function getSearchQuery(){if(data.search_query){return data.search_query;}try{var params=new URLSearchParams(window.location.search||"");return params.get("s")||"";}catch(e){return "";}}function pushPage(){sendEvent("page_view",{page_type:data.page_type||"",page_title:data.page_title||"",page_url:data.page_url||window.location.href});if(data.page_type==="product"&&data.product){sendEvent("view_item",{items:[data.product],value:getNumber(data.product.price),currency:data.currency||""});}if(data.page_type==="cart"&&data.cart){sendEvent("view_cart",{items:data.cart.items||[],value:getNumber(data.cart.value),currency:data.currency||""});}if(data.page_type==="checkout"&&data.checkout){sendEvent("begin_checkout",{items:data.checkout.items||[],value:getNumber(data.checkout.value),currency:data.currency||""});}if(data.page_type==="order_received"&&data.order){var orderId=data.order.id||"";var storageKey="mimoskorea_purchase_"+orderId;var alreadySent=false;if(orderId){try{alreadySent=window.localStorage&&localStorage.getItem(storageKey)==="1";}catch(e){alreadySent=false;}}if(!alreadySent){var purchasePayload={transaction_id:orderId,value:getNumber(data.order.value),tax:getNumber(data.order.tax),shipping:getNumber(data.order.shipping),currency:data.order.currency||data.currency||"",items:data.order.items||[],coupon:data.order.coupon||""};if(orderId){purchasePayload.event_id=String(orderId);}sendEvent("purchase",purchasePayload);if(orderId){try{localStorage.setItem(storageKey,"1");}catch(e){}}}}var searchTerm=getSearchQuery();if(searchTerm){sendEvent("view_search_results",{search_term:searchTerm,page_url:data.page_url||window.location.href});}if(data.page_type==="shop"||data.page_type==="product_category"||data.page_type==="product_tag"){var nodes=document.querySelectorAll("[data-product-id],[data-product_id]");if(nodes&&nodes.length){var seen={};var listItems=[];for(var i=0;i<nodes.length&&listItems.length<20;i++){var listItem=buildItemFromNode(nodes[i]);if(listItem&&listItem.item_id&&!seen[listItem.item_id]){seen[listItem.item_id]=true;listItems.push(listItem);}}if(listItems.length){sendEvent("view_item_list",{items:listItems,item_list_name:data.page_title||data.page_type});}}}}function handleAddToCart(button){var item=buildItemFromButton(button);if(item&&item.item_id){var value=getNumber(item.price)*getQuantity(item.quantity);sendEvent("add_to_cart",{items:[item],value:value,currency:data.currency||""});}}function handleSingleProductAdd(){if(!data.product){return;}var qty=1;var qtyInput=document.querySelector("form.cart input.qty");if(qtyInput){qty=getQuantity(qtyInput.value);}var item=Object.assign({},data.product);item.quantity=qty;var value=getNumber(item.price)*qty;sendEvent("add_to_cart",{items:[item],value:value,currency:data.currency||""});}function bindAddToCart(){if(window.jQuery&&window.jQuery(document.body).on){window.jQuery(document.body).on("added_to_cart",function(event,fragments,cart_hash,$button){var btn=$button&&$button.length?$button[0]:null;handleAddToCart(btn);});}document.addEventListener("click",function(event){var btn=event.target&&event.target.closest?event.target.closest(".single_add_to_cart_button"):null;if(btn&&!btn.classList.contains("ajax_add_to_cart")){handleSingleProductAdd();}});}function bindScroll(){window.addEventListener("scroll",function(){var doc=document.documentElement;var body=document.body;var scrollTop=window.pageYOffset||doc.scrollTop||body.scrollTop||0;var scrollHeight=doc.scrollHeight||body.scrollHeight||0;var clientHeight=doc.clientHeight||window.innerHeight||0;if(scrollHeight<=clientHeight){return;}var percent=((scrollTop+clientHeight)/scrollHeight)*100;if(!sentScroll50&&percent>=50){sentScroll50=true;sendEvent("scroll_50",{percent:50,page_url:data.page_url||window.location.href});}if(!sentScroll90&&percent>=90){sentScroll90=true;sendEvent("scroll_90",{percent:90,page_url:data.page_url||window.location.href});}});}pushPage();bindAddToCart();bindScroll();})();</script>
+JS;
+
+    echo $script;
+}
+add_action('wp_footer', 'mimoskorea_tracking_footer_v2', 20);
