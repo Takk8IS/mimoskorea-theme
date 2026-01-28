@@ -1064,9 +1064,13 @@ function mimoskorea_tracking_head()
 
     echo '<script>window.dataLayer=window.dataLayer||[];window.MimosTrackingSettings=' . wp_json_encode($settings) . ';window.MimosTrackingData=' . wp_json_encode($data) . ';window.MimosTrackingConsent=' . wp_json_encode($consent) . ';</script>';
 
-    if ($ga4_id !== '' && $consent) {
+    if ($ga4_id !== '') {
         echo '<script async src="https://www.googletagmanager.com/gtag/js?id=' . esc_attr($ga4_id) . '"></script>';
-        echo '<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","' . esc_js($ga4_id) . '");</script>';
+        if ($consent) {
+            echo '<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","' . esc_js($ga4_id) . '");</script>';
+        } else {
+            echo '<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("consent","default",{ad_storage:"denied",analytics_storage:"denied"});gtag("config","' . esc_js($ga4_id) . '",{send_page_view:false});</script>';
+        }
     }
 
     if ($gtm_id !== '' && $consent) {
