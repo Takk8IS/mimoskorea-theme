@@ -855,7 +855,7 @@ function mimoskorea_tracking_settings()
 {
     $settings = array(
         'ga4_measurement_id' => 'G-247ZR39S2Y',
-        'gtm_id' => '',
+        'gtm_id' => 'GTM-PCBZ97GW',
         'meta_pixel_id' => '1434179828708252',
         'tiktok_pixel_id' => '',
     );
