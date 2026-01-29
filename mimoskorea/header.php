@@ -19,6 +19,13 @@
 
 <body <?php body_class(); ?>>
     <?php wp_body_open(); ?>
+    <?php
+    $settings = function_exists('mimoskorea_tracking_settings') ? mimoskorea_tracking_settings() : array();
+    $gtm_id = isset($settings['gtm_id']) ? trim((string) $settings['gtm_id']) : '';
+    if ($gtm_id !== '') {
+        echo '<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=' . esc_attr($gtm_id) . '" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>';
+    }
+    ?>
 
     <div id="page" class="site">
         <!-- Tarja Promocional -->
