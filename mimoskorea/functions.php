@@ -854,7 +854,7 @@ add_action('pre_get_posts', 'mimoskorea_force_product_search_main_query', 1);
 function mimoskorea_tracking_settings()
 {
     $settings = array(
-        'ga4_measurement_id' => 'G-KN2PPW71GL',
+        'ga4_measurement_id' => 'G-247ZR39S2Y',
         'gtm_id' => '',
         'meta_pixel_id' => '1434179828708252',
         'tiktok_pixel_id' => '',
