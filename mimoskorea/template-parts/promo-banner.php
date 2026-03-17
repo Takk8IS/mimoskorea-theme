@@ -22,7 +22,7 @@ if (is_page('checkout') || is_checkout()) {
             </a>
         </div>
         <div class="promo-right">
-            ENVIOS GRÁTIS para pedidos acima de R$ 290
+            ENVIOS GRÁTIS para pedidos acima de R$ 150
         </div>
     </div>
 </div>
